@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "types": [
+            "node",
+            "jest"
+        ],
+        "esModuleInterop": true,
+    }
+}

@@ -1,0 +1,40 @@
+name: Build and GH-Page Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./svelte
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          
+      - name: Run data pipeline
+        env:
+          MAL_KEY: ${{ secrets.MAL_KEY }}
+        run: |
+          npm ci
+          npm run all
+        working-directory: ./data-collection
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: |
+          npm run build
+
+      - name: Deploy to GH Page
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: svelte/public

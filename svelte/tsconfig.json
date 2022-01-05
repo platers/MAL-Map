@@ -1,0 +1,34 @@
+{
+	"include": ["src/**/*", "../data-collection/types.ts", "webpack.config.ts"],
+	// "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
+	"compilerOptions": {
+		"moduleResolution": "node",
+		"target": "es2017",
+		"importsNotUsedAsValues": "remove",
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"sourceMap": true,
+		"strict": false,
+		// "baseUrl": ".",
+		// "paths": {
+		// 	"src/*": ["src/*"]
+		// },
+		"types": [
+			"svelte",
+			"svelte/store",
+			"svelte/motion",
+			"svelte/transition",
+			"svelte/animate",
+			"svelte/easing"
+		]
+	},
+
+	// Fixes errors when changing `module` to ES in the above compiler options
+	// See: https://github.com/webpack/webpack-cli/issues/2458#issuecomment-846635277
+	"ts-node": {
+		"compilerOptions": {
+			"module": "commonjs"
+		}
+	}
+}
