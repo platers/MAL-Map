@@ -1,0 +1,13 @@
+anime-offline-database.json
+node_modules
+.DS_Store
+
+*.js
+
+min_metadata.json
+edges.json
+edges.txt
+partitions.txt
+clusters.json
+
+build/
