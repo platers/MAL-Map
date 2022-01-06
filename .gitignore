@@ -9,5 +9,6 @@ edges.json
 edges.txt
 partitions.txt
 clusters.json
+layout.json
 
 build/
