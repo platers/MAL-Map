@@ -144,8 +144,16 @@ export class AnimeNode extends Node {
 	constructor(id: number, metadata: ANIME_DATA) {
 		super(id);
 		this.metadata = metadata;
-		this.addLabel(truncateTitle(metadata.englishTitle || metadata.title));
+		this.addLabel(this.title());
 		this.setScale(Math.sqrt(this.metadata.members) / 300);
+	}
+
+	title(): string {
+		return truncateTitle(this.metadata.englishTitle || this.metadata.title);
+	}
+
+	canonicalTitle() {
+		return this.title().toLowerCase().replace(/[^a-z0-9]/g, '_');
 	}
 
 	addSprite(renderer) {

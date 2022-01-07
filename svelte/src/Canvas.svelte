@@ -180,8 +180,12 @@
 			viewport.setZoom(0.01);
 
 			selected_anime.subscribe((anime) => {
-				if (anime && AnimeNode.last_click_time < Date.now() - 200) {
-					const node = node_map[anime.id];
+				if (!anime) {
+					return;
+				}
+
+				const node = node_map[anime.id] as AnimeNode;
+				if (AnimeNode.last_click_time < Date.now() - 200) {
 					Node.selected = node;
 					viewport.animate({
 						position: new Point(node.x, node.y),
@@ -190,7 +194,23 @@
 						ease: "easeInOutSine",
 					});
 				}
+
+				// update hash
+				params_dict.show = node.canonicalTitle();
+				window.location.hash = _.entries(params_dict)
+					.filter(([k, v]) => v && k)
+					.map(([k, v]) => `${k}=${v}`)
+					.join("&");
 			});
+
+			if (params_dict.show) {
+				const node = (nodes as AnimeNode[]).find(
+					(node) => node.canonicalTitle() === params_dict.show
+				);
+				if (node) {
+					selected_anime.set(node.metadata);
+				}
+			}
 		}
 	});
 </script>
