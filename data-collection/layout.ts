@@ -71,9 +71,11 @@ export class Layout {
             this.simulation.nodes(nodes);
             this.simulation.force(
                 "link",
-                forceLink(edges).strength((link) => {
-                    return link.weight;
-                })
+                forceLink(edges)
+                    .strength((link) => {
+                        return link.weight;
+                    })
+                    .distance(50)
             );
             this.simulation.force(
                 "charge",
