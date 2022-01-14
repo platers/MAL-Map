@@ -93,15 +93,83 @@ function parseMetadata(json): ANIME_DATA {
         ranked: json.rank,
         popularity: json.popularity,
         members: json.num_list_users,
-        related: json.related_anime?.map(r => r.node.id),
+        related: json.related_anime?.map(r => ({
+            id: r.node.id,
+            relation_type: r.relation_type
+        })),
         recommendations: json.recommendations?.map(r => ({ id: r.node.id, count: r.num_recommendations })),
         year: json.start_season?.year,
     }
 }
 
+function mergeSeasons(data: ANIME_DICT): ANIME_DICT {
+    // merge shows related by prequel/sequel into the most popular show
+
+    const canonical_ids = _.mapValues(data, getCanonicalSeason);
+
+    for (const id in data) {
+        const canonical_id = canonical_ids[id];
+        if (canonical_id !== _.toInteger(id)) {
+            // merge reccomendations
+            const recs = data[id].recommendations;
+            if (recs) {
+                if (!data[canonical_id].recommendations) {
+                    data[canonical_id].recommendations = [];
+                }
+                data[canonical_id].recommendations = data[canonical_id].recommendations.concat(recs);
+            }
+        }
+    }
+
+    let merged = {};
+    for (const id in data) {
+        const canonical_id = canonical_ids[id];
+        if (canonical_id === _.toInteger(id)) {
+            const keys = _.uniq(data[id].recommendations.map(r => canonical_ids[r.id])).filter(id => id);
+            data[id].recommendations = keys.map(k => ({
+                id: k,
+                count: data[id].recommendations.filter(r => canonical_ids[r.id] === k).reduce((a, b) => a + b.count, 0)
+            }));
+            merged[id] = data[id];
+        }
+    }
+
+    return merged;
+
+
+    function getCanonicalSeason(show: ANIME_DATA): number {
+        if (!show.related) {
+            return show.id;
+        }
+        let related = [show.id];
+        while (true) {
+            let newRelated = [];
+            for (const id of related) {
+                if (!data[id] || !data[id].related) continue;
+                const relatedTo = data[id].related.filter(r => r.relation_type === 'sequel' || r.relation_type === 'prequel');
+                if (relatedTo) {
+                    _.extend(newRelated, relatedTo.map(r => r.id));
+                }
+                newRelated.push(id);
+            }
+            newRelated = _.uniq(newRelated).filter(id => data[id]);
+            if (newRelated.length === related.length) {
+                break;
+            }
+            related = newRelated;
+        }
+        related = related.filter(id => data[id]);
+
+        return _.minBy(related, id => data[id].popularity);
+    }
+}
+
 export function processMetadata(metadata) {
     const data = _.mapValues(metadata, parseMetadata);
-    const filtered = filterMetadata(data);
+    console.log(`${_.size(data)} shows have metadata`);
+    const merged = mergeSeasons(data);
+    console.log(`${_.size(merged)} shows after merging seasons`);
+    const filtered = filterMetadata(merged);
     console.log(`${_.size(filtered)} shows filtered`);
 
     fs.writeFileSync('data/min_metadata.json', JSON.stringify(filtered, null, 2));

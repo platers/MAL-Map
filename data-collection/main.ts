@@ -7,7 +7,8 @@ const fs = require('fs');
 main();
 
 async function main() {
-    const metadata_json = await storeMetadata(await getIds());
+    // const metadata_json = await storeMetadata(await getIds());
+    const metadata_json = JSON.parse(fs.readFileSync('data/metadata.json').toString());
     const metadata = processMetadata(metadata_json);
 
     const edges = await storeEdges(metadata);
