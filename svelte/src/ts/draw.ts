@@ -36,7 +36,7 @@ export function drawLabels(nodes: AnimeNode[], viewport: Viewport, max_labels = 
 
     // display in order of popularity without overlap
     const bounds = viewport.getVisibleBounds();
-    const min_font_size = Math.max(bounds.width, bounds.height) / 3;
+    const min_font_size = Math.min(bounds.width, bounds.height) / 3;
     const max_font_size = min_font_size * 1.7;
     const min_scale = _.min(final_nodes.map((node) => node.scale)) - 0.0001;
     const max_scale = _.max(final_nodes.map((node) => node.scale));
