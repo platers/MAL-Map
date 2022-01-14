@@ -94,11 +94,13 @@
             {/if}
         </button>
 
+        <div style="text-align: center;">
+            <a href="https://github.com/platers/MAL-Map" class="github-link">
+                <i class="fa fa-github" style="font-size: 30px;" />
+            </a>
+        </div>
         <div class="tree-item graph-control-section">
             <div class="tree-item-self">
-                <!-- <div class="tree-item-inner">
-                    <header>Filters</header>
-                </div> -->
                 <div class="tree-item-children">
                     <Autocomplete
                         options={anime_options}
@@ -370,5 +372,9 @@
         transform: translateX(-50%);
         border-radius: 50%;
         cursor: move;
+    }
+
+    .github-link {
+        color: var(--color-d-gray-20);
     }
 </style>
