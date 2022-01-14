@@ -186,6 +186,15 @@
 			});
 			viewport.setZoom(0.01);
 
+			if (params_dict.show) {
+				const node = (nodes as AnimeNode[]).find(
+					(node) => node.canonicalTitle() === params_dict.show
+				);
+				if (node) {
+					selected_anime.set(node.metadata);
+				}
+			}
+
 			selected_anime.subscribe((anime) => {
 				if (!anime) {
 					params_dict.show = null;
@@ -208,15 +217,6 @@
 				params_dict.show = node.canonicalTitle();
 				updateHashParams();
 			});
-
-			if (params_dict.show) {
-				const node = (nodes as AnimeNode[]).find(
-					(node) => node.canonicalTitle() === params_dict.show
-				);
-				if (node) {
-					selected_anime.set(node.metadata);
-				}
-			}
 		}
 	});
 </script>
