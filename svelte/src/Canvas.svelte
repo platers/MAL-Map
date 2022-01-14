@@ -20,6 +20,13 @@
 	const params_dict = _.fromPairs(params.map((param) => param.split("=")));
 	console.log(params_dict);
 
+	function updateHashParams() {
+		window.location.hash = _.entries(params_dict)
+			.filter(([k, v]) => v && k)
+			.map(([k, v]) => `${k}=${v}`)
+			.join("&");
+	}
+
 	onMount(async () => {
 		const app = new Application({
 			view: canvas,
@@ -181,6 +188,8 @@
 
 			selected_anime.subscribe((anime) => {
 				if (!anime) {
+					params_dict.show = null;
+					updateHashParams();
 					return;
 				}
 
@@ -197,10 +206,7 @@
 
 				// update hash
 				params_dict.show = node.canonicalTitle();
-				window.location.hash = _.entries(params_dict)
-					.filter(([k, v]) => v && k)
-					.map(([k, v]) => `${k}=${v}`)
-					.join("&");
+				updateHashParams();
 			});
 
 			if (params_dict.show) {
