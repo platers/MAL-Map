@@ -1,17 +1,19 @@
 import { createCluster } from "./cluster";
 import { Layout } from "./layout";
 import { storeEdges } from "./recs";
-import { storeMetadata, getIds, processMetadata } from "./shows";
+import { storeMetadata, getIds, processMetadata, storeAniListMetadata } from "./shows";
 const fs = require('fs');
 
 main();
 
 async function main() {
-    // const metadata_json = await storeMetadata(await getIds());
-    const metadata_json = JSON.parse(fs.readFileSync('data/metadata.json').toString());
-    const metadata = processMetadata(metadata_json);
+    const ids = await getIds();
+    const metadata_json = await storeMetadata(ids);
+    const anilist_metadata_json = await storeAniListMetadata(ids);
+    // const metadata_json = JSON.parse(fs.readFileSync('data/metadata.json').toString());
+    const metadata = processMetadata(metadata_json, anilist_metadata_json);
 
-    const edges = await storeEdges(metadata);
+    const edges = storeEdges(metadata);
 
     const root_cluster = await createCluster(edges);
 

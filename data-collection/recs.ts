@@ -36,7 +36,7 @@ function getEdges(metadatas: ANIME_DICT) {
         const total_recs = _.sumBy(recs, r => r.count);
 
         for (const rec of _.values(recs)) {
-            addToEdge(parseInt(id), parseInt(rec.id), rec.count / total_recs / 2);
+            addToEdge(parseInt(id), rec.id, rec.count / total_recs / 2);
         }
     }
 
