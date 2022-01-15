@@ -10,7 +10,6 @@
     import Autocomplete from "@smui-extra/autocomplete";
     import { ANIME_DATA } from "../../data-collection/types";
 
-    const num_anime = _.size(Anime);
     const anime_options = _.values(Anime);
     let sidebar_active = false;
 
@@ -185,14 +184,24 @@
   
                     -->
                     <div class="setting-item mod-slider">
-                        <div class="setting-item-info">Score threshold</div>
+                        <div class="setting-item-info">Score threshold: {$settings.scoreThreshold}</div>
                         <Slider
                             bind:value={$settings.scoreThreshold}
                             min={0}
                             max={10}
                             step={.01}
-                            input$aria-label="Continuous slider"
                             label="Popularity threshold"
+                        />
+                    </div>
+                    <div class="setting-item mod-slider">
+                        <div class="setting-item-info">Year: {$settings.startYear} - {$settings.endYear}</div>
+                        <Slider range
+                            bind:start={$settings.startYear}
+                            bind:end={$settings.endYear}
+                            min={1960}
+                            max={2025}
+                            step={1}
+                            label="Year range"
                         />
                     </div>
                 </div>

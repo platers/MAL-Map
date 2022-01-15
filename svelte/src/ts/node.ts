@@ -155,7 +155,8 @@ export class AnimeNode extends Node {
 
 	updateBrightness(settings: Settings) {
 		const passingScore = this.metadata.score >= settings.scoreThreshold;
-		if (passingScore) {
+		const yearInRange = this.metadata.year <= settings.endYear && this.metadata.year >= settings.startYear;
+		if (passingScore && yearInRange) {
 			this.brightness = 1;
 		} else {
 			this.brightness = 0.5;
