@@ -18,7 +18,6 @@ div {
 	display: block;
 }
 
-
 :root {
 	--color-d-white: hsl(34, 50%, 80%);
 	--color-d-gray: var(--color-d-gray-50);
@@ -33,10 +32,9 @@ div {
 	--color-d-gray-90: hsl(30, 15%, 13%); /* Codes/ YAML*/
 	--interactive-accent: #483699;
 	--mdc-theme-primary: var(--color-d-gray-20);
-	
 
 	--color-d-shadow-10: rgba(0, 0, 0, 0.45); /* Multiples of 8 */
-	--background-modifier-border:   var(--color-d-gray-40);
+	--background-modifier-border: var(--color-d-gray-40);
 	--scale-8-1: 8px;
 	--scale-8-2: 16px;
 	--scale-8-3: 24px;
@@ -54,19 +52,21 @@ div {
 	font-family: var(--font-sans);
 	color: var(--color-d-gray-20);
 
-
-.mdc-text-field__input{
-	color: var(--color-d-gray-20) !important;
-	caret-color: var(--color-d-gray-30) !important;
-}
-.mdc-floating-label {
-	color: var(--color-d-gray-10) !important;
-}
-.mdc-deprecated-list {
-	background-color: var(--color-d-gray-70) !important;
-	// color: var(--text-normal) !important;
-}
-.mdc-deprecated-list-item__text {
-	color: var(--color-d-gray-10) !important;
-}
+	.mdc-text-field__input {
+		color: var(--color-d-gray-20) !important;
+		caret-color: var(--color-d-gray-30) !important;
+	}
+	.mdc-floating-label {
+		color: var(--color-d-gray-10) !important;
+	}
+	.mdc-deprecated-list {
+		background-color: var(--color-d-gray-70) !important;
+		// color: var(--text-normal) !important;
+	}
+	.mdc-deprecated-list-item__text {
+		color: var(--color-d-gray-10) !important;
+	}
+	.mdc-slider .mdc-slider__track--active {
+		height: 3px !important;
+	}
 }

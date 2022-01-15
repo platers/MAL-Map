@@ -2,7 +2,7 @@ import { Graphics, BitmapFont, BitmapText, Point, Sprite, Loader, Rectangle } fr
 import { hslToHex, NodeId, truncateTitle } from './utils';
 import { Viewport } from 'pixi-viewport';
 import { ANIME_DATA } from '../../../data-collection/types';
-import { selected_anime, Settings } from '../store';
+import { selected_anime, settings, Settings } from '../store';
 import _ from 'lodash';
 import { Edge } from './edge';
 export const NODE_RADIUS = 400; // big so circle is smooth
@@ -31,6 +31,7 @@ export class Node {
 	hue: number = 0;
 	saturation: number = 30;
 	lightness: number = 50;
+	brightness: number = 1.0; // mutiplier based on filters
 
 	scale: number = 1;
 	dist_to_selected: number = NaN;
@@ -94,7 +95,7 @@ export class Node {
 		} else if (this.dist_to_selected === 0) {
 			// this.graphics.tint = WATCHED_NODE_COLOR;
 		}
-		this.graphics.tint = hslToHex(this.hue, this.saturation, this.lightness);
+		this.graphics.tint = hslToHex(this.hue, this.saturation, this.lightness * this.brightness);
 
 		this.graphics.position.set(this.x, this.y);
 	}
@@ -148,6 +149,18 @@ export class AnimeNode extends Node {
 		this.metadata = metadata;
 		this.addLabel(this.title());
 		this.setScale(Math.sqrt(this.metadata.members) / 300);
+
+		settings.subscribe(this.updateBrightness.bind(this));
+	}
+
+	updateBrightness(settings: Settings) {
+		const passingScore = this.metadata.score >= settings.scoreThreshold;
+		const yearInRange = this.metadata.year <= settings.endYear && this.metadata.year >= settings.startYear;
+		if (passingScore && yearInRange) {
+			this.brightness = 1;
+		} else {
+			this.brightness = 0.5;
+		}
 	}
 
 	title(): string {
