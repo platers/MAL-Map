@@ -199,7 +199,7 @@
                             bind:start={$settings.startYear}
                             bind:end={$settings.endYear}
                             min={1960}
-                            max={2025}
+                            max={2026}
                             step={1}
                             label="Year range"
                         />
