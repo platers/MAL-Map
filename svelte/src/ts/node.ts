@@ -1,5 +1,5 @@
 import { Graphics, BitmapFont, BitmapText, Point, Sprite, Loader, Rectangle } from 'pixi.js';
-import { hslToHex, NodeId, truncateTitle } from './utils';
+import { hslToHex, nativeTitle, NodeId, params_dict, truncateTitle } from './utils';
 import { Viewport } from 'pixi-viewport';
 import { ANIME_DATA } from '../../../data-collection/types';
 import { selected_anime, Settings } from '../store';
@@ -146,16 +146,16 @@ export class AnimeNode extends Node {
 	constructor(id: number, metadata: ANIME_DATA) {
 		super(id);
 		this.metadata = metadata;
-		this.addLabel(this.title());
+		this.addLabel(this.truncatedTitle());
 		this.setScale(Math.sqrt(this.metadata.members) / 300);
 	}
 
-	title(): string {
-		return truncateTitle(this.metadata.englishTitle || this.metadata.title);
+	truncatedTitle(): string {
+		return truncateTitle(nativeTitle(this.metadata));
 	}
 
 	canonicalTitle() {
-		return this.title().toLowerCase().replace(/[^a-z0-9]/g, '_');
+		return this.truncatedTitle().toLowerCase().replace(/[^a-z0-9]/g, '_');
 	}
 
 	addSprite(renderer) {

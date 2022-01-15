@@ -9,6 +9,7 @@
     import Slider from "@smui/slider";
     import Autocomplete from "@smui-extra/autocomplete";
     import { ANIME_DATA } from "../../data-collection/types";
+    import { nativeTitle } from "./ts/utils";
 
     const num_anime = _.size(Anime);
     const anime_options = _.values(Anime);
@@ -40,7 +41,11 @@
         if (!option) return "";
         if (!option.englishTitle) return option.title;
         if (option.title === option.englishTitle) return option.title;
-        return `${option.englishTitle} (${option.title})`;
+        if (nativeTitle(option) === option.englishTitle) {
+            return `${option.englishTitle} (${option.title})`;
+        } else {
+            return `${option.title} (${option.englishTitle})`;
+        }
     }
 
     onMount(() => {

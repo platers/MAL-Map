@@ -1,4 +1,6 @@
+import _ from "lodash";
 import { Rectangle } from "pixi.js";
+import { ANIME_DATA } from "../../../data-collection/types";
 const unidecode = require("unidecode");
 
 export type NodeId = number;
@@ -31,4 +33,16 @@ export function truncateTitle(title: string) {
     }
     // title = unidecode(title);
     return title;
+}
+
+const params = window.location.hash.substring(1).split("&");
+export const params_dict = _.fromPairs(params.map((param) => param.split("=")));
+console.log(params_dict);
+
+
+
+export function nativeTitle(metadata: ANIME_DATA) {
+    const lang = params_dict.language || 'en';
+    console.log(lang);
+    return lang == 'en' ? metadata.englishTitle : metadata.title;
 }

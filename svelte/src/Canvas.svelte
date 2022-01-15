@@ -13,12 +13,10 @@
 	import Layout_ from "../../data-collection/data/layout.json";
 	import { Layout } from "../../data-collection/layout";
 	import { Cluster_Nodes } from "./ts/cluster";
+	import { params_dict } from "./ts/utils";
 	let canvas: HTMLCanvasElement;
 
 	const Metadata = Animes as unknown as ANIME_DICT;
-	const params = window.location.hash.substring(1).split("&");
-	const params_dict = _.fromPairs(params.map((param) => param.split("=")));
-	console.log(params_dict);
 
 	function updateHashParams() {
 		window.location.hash = _.entries(params_dict)
