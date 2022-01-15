@@ -241,7 +241,7 @@ function mergeSeasons(data: ANIME_DICT): ANIME_DICT {
                 if (!data[id] || !data[id].related) continue;
                 const relatedTo = data[id].related.filter(r => r.relation_type === 'sequel' || r.relation_type === 'prequel');
                 if (relatedTo) {
-                    _.extend(newRelated, relatedTo.map(r => r.id));
+                    newRelated = newRelated.concat(relatedTo.map(r => r.id));
                 }
                 newRelated.push(id);
             }
