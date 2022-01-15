@@ -16,7 +16,7 @@ BitmapFont.from("TitleFont", {
 	fill: 0xe6cfb3,
 	fontSize: 80,
 }, {
-	chars: BitmapFont.ASCII
+	chars: BitmapFont.ASCII.concat(['∀']),
 });
 
 export class Node {
@@ -59,6 +59,8 @@ export class Node {
 
 	addLabel(label: string) {
 		this.label = new BitmapText(label, {
+			// fill: 0xe6cfb3,
+			fontSize: 80,
 			fontName: "TitleFont"
 		});
 		this.label.anchor.set(0.5, -0.3);
