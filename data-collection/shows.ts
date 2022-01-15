@@ -184,11 +184,11 @@ export function augmentMetadata(metadata: ANIME_DICT, anilist_metadata: ANILIST_
         const ani_recs = anilist_metadata[id];
         const recs = metadata[id].recommendations;
         for (const rec in ani_recs) {
-            const fnd = recs.find(r => r.id === rec);
+            const fnd = recs.find(r => r.id === parseInt(rec));
             if (fnd) {
                 fnd.count += ani_recs[rec];
             } else {
-                recs.push({ id: rec, count: ani_recs[rec] });
+                recs.push({ id: parseInt(rec), count: ani_recs[rec] });
             }
         }
     }

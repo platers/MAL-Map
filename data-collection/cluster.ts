@@ -12,7 +12,7 @@ export async function createCluster(edges: Edge[]) {
 
     console.log('Creating clusters...');
     let start = Date.now();
-    await execShellCommand("java -jar data/clustering.jar data/edges.txt -recursive data/partitions.txt -minsize 10")
+    await execShellCommand("java -jar data/clustering.jar data/edges.txt -recursive data/partitions.txt -minsize 15 -recrandom 50 -reduction 0.2");
     console.log(`Clustering took ${(Date.now() - start)/1000}s`);
 
     // Process clusters
