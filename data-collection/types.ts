@@ -15,5 +15,6 @@ export type ANIME_DATA = {
     related: { id: number, relation_type: string }[];
     recommendations: { id: number, count: number }[];
     year: number;
+    nsfw: boolean;
 };
 export type ANIME_DICT = { [id: number]: ANIME_DATA; };
