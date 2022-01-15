@@ -80,5 +80,6 @@ export function drawImages(nodes: AnimeNode[], viewport: Viewport) {
         node.sprite.visible = true;
         node.graphics.visible = false;
         node.label.y = node.y + node.sprite.height / 2;
+        node.sprite.alpha = node.brightness;
     }
 }
