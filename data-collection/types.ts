@@ -12,7 +12,7 @@ export type ANIME_DATA = {
     ranked: number;
     popularity: number;
     members: number;
-    related: number[];
+    related: { id: number, relation_type: string }[];
     recommendations: { id: string, count: number }[];
     year: number;
 };

@@ -38,10 +38,6 @@ function getEdges(metadatas: ANIME_DICT) {
         for (const rec of _.values(recs)) {
             addToEdge(parseInt(id), parseInt(rec.id), rec.count / total_recs / 2);
         }
-
-        for (const related of metadata.related) {
-            addToEdge(parseInt(id), related, 7);
-        }
     }
 
     return _.values(edge_dict);
