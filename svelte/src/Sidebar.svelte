@@ -72,11 +72,24 @@
             sidebar_active = false;
         }
     });
+
+    let filters_active = false;
+    function clickCollapsible(e: Event) {
+        filters_active = !filters_active;
+        let target = e.target as HTMLElement;
+        let content = target.nextElementSibling as HTMLElement;
+        if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+        } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+        }
+        console.log(target);
+    }
 </script>
 
 <aside id="sidebar">
     <div class="sidebarWrapper">
-        <button class="fold-button" id="fold-button" on:click={() => 1}>
+        <button class="fold-button" id="fold-button">
             {#if sidebar_active}
                 <i class="fa fa-chevron-left" />
             {:else}
@@ -91,43 +104,52 @@
         </div>
         <div class="tree-item graph-control-section">
             <div class="tree-item-self">
+                <Autocomplete
+                    options={anime_options}
+                    {getOptionLabel}
+                    showMenuWithNoInput={false}
+                    search={async (input) => {
+                        const linput = input.toLowerCase();
+                        return anime_options
+                            .filter((a) => {
+                                return getOptionLabel(a)
+                                    .toLowerCase()
+                                    .includes(linput);
+                            })
+                            .sort((a, b) => {
+                                const aString = getOptionLabel(a).toLowerCase();
+                                const bString = getOptionLabel(b).toLowerCase();
+                                if (
+                                    aString.startsWith(linput) &&
+                                    !bString.startsWith(linput)
+                                ) {
+                                    return -1;
+                                } else if (
+                                    bString.startsWith(linput) &&
+                                    !aString.startsWith(linput)
+                                ) {
+                                    return 1;
+                                }
+                                return 0;
+                            })
+                            .slice(0, 10);
+                    }}
+                    bind:value={autocomplete_anime}
+                    placeholder="Search for an anime"
+                    label="Search Anime"
+                />
+                <button
+                    class="collapsible"
+                    on:click={(e) => clickCollapsible(e)}
+                >
+                    {#if filters_active}
+                        <i class="fa fa-caret-down fa-caret" />
+                    {:else}
+                        <i class="fa fa-caret-right fa-caret" />
+                    {/if}
+                    Filters
+                </button>
                 <div class="tree-item-children">
-                    <Autocomplete
-                        options={anime_options}
-                        {getOptionLabel}
-                        showMenuWithNoInput={false}
-                        search={async (input) => {
-                            const linput = input.toLowerCase();
-                            return anime_options
-                                .filter((a) => {
-                                    return getOptionLabel(a)
-                                        .toLowerCase()
-                                        .includes(linput);
-                                })
-                                .sort((a, b) => {
-                                    const aString =
-                                        getOptionLabel(a).toLowerCase();
-                                    const bString =
-                                        getOptionLabel(b).toLowerCase();
-                                    if (
-                                        aString.startsWith(linput) &&
-                                        !bString.startsWith(linput)
-                                    ) {
-                                        return -1;
-                                    } else if (
-                                        bString.startsWith(linput) &&
-                                        !aString.startsWith(linput)
-                                    ) {
-                                        return 1;
-                                    }
-                                    return 0;
-                                })
-                                .slice(0, 10);
-                        }}
-                        bind:value={autocomplete_anime}
-                        placeholder="Search for an anime"
-                        label="Search Anime"
-                    />
                     <!-- <div class="setting-item mod-text">
                         <div class="setting-item-control">
                             <div class="text-input-wrapper">
@@ -184,18 +206,23 @@
   
                     -->
                     <div class="setting-item mod-slider">
-                        <div class="setting-item-info">Score threshold: {$settings.scoreThreshold}</div>
+                        <div class="setting-item-info">
+                            Score threshold: {$settings.scoreThreshold}
+                        </div>
                         <Slider
                             bind:value={$settings.scoreThreshold}
                             min={0}
                             max={10}
-                            step={.01}
+                            step={0.01}
                             label="Popularity threshold"
                         />
                     </div>
                     <div class="setting-item mod-slider">
-                        <div class="setting-item-info">Year: {$settings.startYear} - {$settings.endYear}</div>
-                        <Slider range
+                        <div class="setting-item-info">
+                            Year: {$settings.startYear} - {$settings.endYear}
+                        </div>
+                        <Slider
+                            range
                             bind:start={$settings.startYear}
                             bind:end={$settings.endYear}
                             min={1960}
@@ -212,6 +239,23 @@
 </aside>
 
 <style>
+    .collapsible {
+        cursor: pointer;
+        padding: 0;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        color: var(--color-d-gray-20);
+    }
+
+    .fa-caret {
+        margin-right: 5px;
+        width: 10px;
+    }
+
     aside {
         position: absolute;
         left: -300px;
@@ -269,6 +313,10 @@
         border-bottom: 1px solid var(--background-modifier-border);
         /* margin-left: 20px; */
         width: 100%;
+
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
     }
 
     .setting-item {
@@ -306,32 +354,6 @@
         justify-content: flex-end;
         align-items: center;
         /* display: flex; */
-    }
-
-    /*────────────────────────────────────
-                Slider
-────────────────────────────────────*/
-    input[type="range"] {
-        width: 100%;
-        -webkit-appearance: none;
-        background-color: transparent;
-        height: 24px;
-        /* border-radius: 3px; */
-    }
-    input[type="range"]::-webkit-slider-runnable-track {
-        height: 2px;
-        background-color: var(--background-modifier-border);
-        -webkit-appearance: none;
-    }
-    input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        border-radius: 6px;
-        width: 24px;
-        height: 12px;
-        cursor: ew-resize;
-        background: var(--color-d-gray-20);
-        position: relative;
-        top: -6px;
     }
 
     .text-input {
