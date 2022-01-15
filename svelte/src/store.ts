@@ -10,7 +10,6 @@ export type Settings = {
     distance: number;
 };
 
-const hash = window.location.hash.substring(1);
 export const settings: Writable<Settings> = writable({
     theme: "dark",
     scoreThreshold: 0,

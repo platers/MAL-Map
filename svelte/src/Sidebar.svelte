@@ -14,13 +14,6 @@
     const anime_options = _.values(Anime);
     let sidebar_active = false;
 
-    let popularityThreshold = window.location.hash.length > 0 ? 1 : 0.2;
-    let scoreThreshold = 1;
-    $: $settings.popularityThreshold =
-        Math.pow(popularityThreshold, 2) * num_anime;
-    $: $settings.scoreThreshold = Math.pow(scoreThreshold, 2) * num_anime;
-    console.log(`Popularity threshold: ${$settings.popularityThreshold}`);
-
     let username = $settings.username;
     let autocomplete_anime: ANIME_DATA | null = null;
     $: if (autocomplete_anime) {
@@ -31,8 +24,6 @@
         e.preventDefault();
         console.log(username);
         $settings.username = username;
-        scoreThreshold = 1;
-        popularityThreshold = 1;
         window.location.hash = username;
     }
 
@@ -192,14 +183,18 @@
                         </div>
                     </div> 
   
-                    <Slider
-                        bind:value={popularityThreshold}
-                        min={0}
-                        max={1}
-                        step={0.0001}
-                        label="Popularity threshold"
-                    />
                     -->
+                    <div class="setting-item mod-slider">
+                        <div class="setting-item-info">Score threshold</div>
+                        <Slider
+                            bind:value={$settings.scoreThreshold}
+                            min={0}
+                            max={10}
+                            step={.01}
+                            input$aria-label="Continuous slider"
+                            label="Popularity threshold"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -268,7 +263,6 @@
     }
 
     .setting-item {
-        display: flex;
         align-items: center;
         border-top: 1px solid var(--background-modifier-border);
         padding-top: var(--scale-8-1);
