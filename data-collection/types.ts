@@ -12,8 +12,9 @@ export type ANIME_DATA = {
     ranked: number;
     popularity: number;
     members: number;
-    related: number[];
-    recommendations: { id: string, count: number }[];
+    related: { id: number, relation_type: string }[];
+    recommendations: { id: number, count: number }[];
     year: number;
+    nsfw: boolean;
 };
 export type ANIME_DICT = { [id: number]: ANIME_DATA; };

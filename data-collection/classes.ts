@@ -73,7 +73,7 @@ export class Cluster {
         this.clusters.push(cluster);
     }
 
-    merge(min_prop = 0.15, min_size = 5) {
+    merge(min_prop = 0.15, min_size = 10) {
         const threshold = Math.max(min_size, this.size() * min_prop);
         if (this.size() < threshold) {
             throw new Error(`Cluster is too small to merge`);

@@ -29,6 +29,6 @@ export function truncateTitle(title: string) {
     if (colon !== -1) {
         title = title.slice(0, colon);
     }
-    title = unidecode(title);
+    // title = unidecode(title);
     return title;
 }

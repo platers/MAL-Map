@@ -69,7 +69,7 @@ export function drawImages(nodes: AnimeNode[], viewport: Viewport) {
     }
 
     const visible_nodes = getViewportNodes(nodes, viewport) as AnimeNode[];
-    if (viewport.screenWidthInWorldPixels > 300) {
+    if (viewport.screenWidthInWorldPixels > 400) {
         return;
     }
 
