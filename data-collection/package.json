@@ -4,9 +4,6 @@
   "scripts": {
     "build": "tsc *.ts",
     "dev": "tsc-watch *.ts",
-    "shows": "node shows.js",
-    "recs": "node recs.js",
-    "cluster": "node cluster.js",
     "main": "node main.js",
     "all": "npm run build && npm run main"
   },

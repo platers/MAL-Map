@@ -4,7 +4,7 @@ const cliProgress = require('cli-progress');
 import fetch from "cross-fetch";
 import { ANIME_DATA, ANIME_DICT } from './types';
 
-const KEY = process.env.MAL_KEY;
+const KEY = 'e0e691a27a61d8cca4d3446774022c20'; // please be responsible
 
 export async function getIds() {
     console.log('Getting ids from MAL');
