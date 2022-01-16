@@ -80,7 +80,7 @@ import { queryUser } from "./ts/utils";
     </div>
 
     <div class="setting-item mod-slider">
-        <div class="setting-item-info">Distance to list: {$settings.distance}</div>
+        <div class="setting-item-info">Distance to user watched list: {$settings.distance}</div>
         <Slider
             bind:value={$settings.distance}
             min={0}
