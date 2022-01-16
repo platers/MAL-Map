@@ -9,6 +9,7 @@
     import Anime from "../../data-collection/data/min_metadata.json";
     import Autocomplete from "@smui-extra/autocomplete";
     import { ANIME_DATA } from "../../data-collection/types";
+    import { nativeTitle } from "./ts/utils";
 
     const anime_options = _.values(Anime);
     let sidebar_active = false;
@@ -30,7 +31,11 @@
         if (!option) return "";
         if (!option.englishTitle) return option.title;
         if (option.title === option.englishTitle) return option.title;
-        return `${option.englishTitle} (${option.title})`;
+        if (nativeTitle(option) === option.englishTitle) {
+            return `${option.englishTitle} (${option.title})`;
+        } else {
+            return `${option.title} (${option.englishTitle})`;
+        }
     }
 
     onMount(() => {
