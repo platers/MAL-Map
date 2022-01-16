@@ -9,7 +9,7 @@
     import Anime from "../../data-collection/data/min_metadata.json";
     import Autocomplete from "@smui-extra/autocomplete";
     import { ANIME_DATA } from "../../data-collection/types";
-    import { currentLanguage, nativeTitle } from "./ts/utils";
+    import { currentLanguage, nativeTitle, params_dict, updateHashParams } from "./ts/utils";
 
     const anime_options = _.values(Anime);
     let sidebar_active = false;
@@ -60,6 +60,13 @@
             sidebar_active = false;
         }
     });
+
+    function changeLanguage() {
+        const newLang = currentLanguage() === "en" ? "ja" : "en";
+        params_dict.language = newLang;
+        updateHashParams();
+        window.location.reload();
+    }
 </script>
 
 <aside id="sidebar">
@@ -76,15 +83,13 @@
             <a href="https://github.com/platers/MAL-Map" class="github-link">
                 <i class="fa fa-github" style="font-size: 30px;" />
             </a>
-            {#if currentLanguage() === "en"}
-                <a href="https://www.malmap.net/#language=jp" class="language-link">
-                    JP
-                </a>
-            {:else}
-                <a href="https://www.malmap.net/#language=en" class="language-link">
+            <button class="lang-button" on:click={e => changeLanguage()}>
+                {#if currentLanguage() === "en"}
+                    JA
+                {:else}
                     EN
-                </a>
-            {/if}
+                {/if}
+            </button>
         </div>
         <div class="tree-item graph-control-section">
             <div class="tree-item-self">
@@ -189,7 +194,10 @@
         color: var(--color-d-gray-20);
     }
 
-    .language-link {
+    .lang-button {
         color: var(--color-d-gray-20);
+        background: transparent;
+        cursor: pointer;
+        border: none;
     }
 </style>

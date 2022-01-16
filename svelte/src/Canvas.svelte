@@ -13,17 +13,10 @@
 	import Layout_ from "../../data-collection/data/layout.json";
 	import { Layout } from "../../data-collection/layout";
 	import { Cluster_Nodes } from "./ts/cluster";
-	import { params_dict } from "./ts/utils";
+	import { params_dict, updateHashParams } from "./ts/utils";
 	let canvas: HTMLCanvasElement;
 
 	const Metadata = Animes as unknown as ANIME_DICT;
-
-	function updateHashParams() {
-		window.location.hash = _.entries(params_dict)
-			.filter(([k, v]) => v && k)
-			.map(([k, v]) => `${k}=${v}`)
-			.join("&");
-	}
 
 	onMount(async () => {
 		const app = new Application({

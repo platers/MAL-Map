@@ -39,6 +39,13 @@ const params = window.location.hash.substring(1).split("&");
 export const params_dict = _.fromPairs(params.map((param) => param.split("=")));
 console.log(params_dict);
 
+export function updateHashParams() {
+    window.location.hash = _.entries(params_dict)
+        .filter(([k, v]) => v && k)
+        .map(([k, v]) => `${k}=${v}`)
+        .join("&");
+}
+
 export function currentLanguage() {
     return params_dict.language || "en";
 }
