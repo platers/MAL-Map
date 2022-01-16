@@ -46,23 +46,24 @@ export function nativeTitle(metadata: ANIME_DATA) {
     return lang == 'en' ? metadata.englishTitle || metadata.title : metadata.title;
 }
 
-async function fetchWithTimeout(resource: string, timeout = 2000) {
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), timeout);
-    const response = await fetch(resource, {
-        signal: controller.signal
+export async function queryUser(username: string): Promise<number[]> {
+    const proxy_url = 'https://corsanywhere.herokuapp.com/';
+    const mal_url = `https://api.myanimelist.net/v2/users/${username}/animelist`;
+    const full_url = `${proxy_url}${mal_url}?` + new URLSearchParams({
+        'limit': '1000',
+        'status': 'completed',
+        'sort': 'list_score',
+    }).toString();
+    const response = await fetch(full_url, {
+        headers: {
+            "X-MAL-CLIENT-ID": "e0e691a27a61d8cca4d3446774022c20", // please dont steal. This is used on the client, impossible to hide.
+        },
     });
-    clearTimeout(id);
-    return response;
-}
-
-export async function queryUser(username: string) : Promise<number[]> {
     try {
-        const response = await fetchWithTimeout(`https://api.jikan.moe/v3/user/${username}/animelist/completed`, 8000);
-        const json = await response.json();
-        const anime = json.anime.map(anime => (anime.mal_id as number));
-        console.log('recieved', anime);
-        return anime;
+        const data = await response.json();
+        const ids = data.data.map((entry: any) => entry.node.id);
+        console.log(ids);
+        return ids;
     } catch (e) {
         console.log(e);
         return null;
