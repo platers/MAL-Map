@@ -65,6 +65,7 @@
 				return;
 			}
 			Node.selected = null;
+			selected_anime.set(undefined); // force update
 			selected_anime.set(null);
 		});
 
@@ -217,7 +218,7 @@
 			});
 
 			completedList.subscribe((list) => {
-				const startNodes = list
+				const startNodes = list?.length > 0
 					? list.map((id) => node_map[id]).filter((node) => node)
 					: nodes;
 				Node.bfs(startNodes, nodes);
