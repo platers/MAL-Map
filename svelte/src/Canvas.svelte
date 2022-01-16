@@ -7,18 +7,16 @@
 	import { Edge, LineContainer } from "./ts/edge";
 	import { Viewport } from "pixi-viewport";
 	import { ANIME_DICT } from "../../data-collection/types";
-	import { selected_anime } from "./store";
+	import { completedList, selected_anime, settings } from "./store";
 	import { drawImages, drawLabels } from "./ts/draw";
 	import Edges from "../../data-collection/data/edges.json";
 	import Layout_ from "../../data-collection/data/layout.json";
 	import { Layout } from "../../data-collection/layout";
 	import { Cluster_Nodes } from "./ts/cluster";
+	import { params_dict } from "./ts/utils";
 	let canvas: HTMLCanvasElement;
 
 	const Metadata = Animes as unknown as ANIME_DICT;
-	const params = window.location.hash.substring(1).split("&");
-	const params_dict = _.fromPairs(params.map((param) => param.split("=")));
-	console.log(params_dict);
 
 	function updateHashParams() {
 		window.location.hash = _.entries(params_dict)
@@ -216,6 +214,13 @@
 				// update hash
 				params_dict.show = node.canonicalTitle();
 				updateHashParams();
+			});
+
+			completedList.subscribe((list) => {
+				const startNodes = list
+					? list.map((id) => node_map[id]).filter((node) => node)
+					: nodes;
+				Node.bfs(startNodes, nodes);
 			});
 		}
 	});

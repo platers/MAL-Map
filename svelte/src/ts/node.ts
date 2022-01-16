@@ -1,8 +1,8 @@
 import { Graphics, BitmapFont, BitmapText, Point, Sprite, Loader, Rectangle } from 'pixi.js';
-import { hslToHex, NodeId, truncateTitle } from './utils';
+import { hslToHex, nativeTitle, NodeId, params_dict, truncateTitle } from './utils';
 import { Viewport } from 'pixi-viewport';
 import { ANIME_DATA } from '../../../data-collection/types';
-import { selected_anime, Settings } from '../store';
+import { selected_anime, settings, Settings } from '../store';
 import _ from 'lodash';
 import { Edge } from './edge';
 export const NODE_RADIUS = 400; // big so circle is smooth
@@ -31,10 +31,12 @@ export class Node {
 	hue: number = 0;
 	saturation: number = 30;
 	lightness: number = 50;
+	brightness: number = 1.0; // mutiplier based on filters
 
 	scale: number = 1;
 	dist_to_selected: number = NaN;
 	recommendation_score: number = NaN;
+	recommendation_rank: number = 0;
 
 	graphics: Sprite;
 
@@ -94,7 +96,7 @@ export class Node {
 		} else if (this.dist_to_selected === 0) {
 			// this.graphics.tint = WATCHED_NODE_COLOR;
 		}
-		this.graphics.tint = hslToHex(this.hue, this.saturation, this.lightness);
+		this.graphics.tint = hslToHex(this.hue, this.saturation, this.lightness * this.brightness);
 
 		this.graphics.position.set(this.x, this.y);
 	}
@@ -133,6 +135,50 @@ export class Node {
 	radius() {
 		return NODE_RADIUS * this.scale;
 	}
+
+	static bfs(start: Node[], all_nodes: Node[]) {
+		const queue = new Set<Node>();
+		for (const node of all_nodes) {
+			node.dist_to_selected = Infinity;
+			node.recommendation_score = 0;
+		}
+
+		for (const node of start) {
+			queue.add(node);
+			node.dist_to_selected = 0;
+			node.recommendation_score = 1;
+		}
+
+		while (queue.size > 0) {
+			const node = queue.values().next().value;
+			queue.delete(node);
+
+			for (const edge of node.edges) {
+				const neighbor = edge.target == node ? edge.source : edge.target;
+				if (neighbor.dist_to_selected < node.dist_to_selected + 1) {
+					continue;
+				}
+
+				neighbor.dist_to_selected = node.dist_to_selected + 1;
+				neighbor.recommendation_score += node.recommendation_score * edge.weight;
+				queue.add(neighbor);
+			}
+		}
+
+		const sorted = [...all_nodes]
+			.sort((a: Node, b: Node) => {
+				if (a.dist_to_selected != b.dist_to_selected)
+					return a.dist_to_selected - b.dist_to_selected;
+				return b.recommendation_score - a.recommendation_score;
+			});
+
+		for (let i = 0; i < sorted.length; i++) {
+			const node = sorted[i];
+			node.recommendation_rank = node.dist_to_selected === 0 ?
+				0 :
+				(i - start.length) / (sorted.length - start.length);
+		}
+	}
 }
 
 
@@ -146,16 +192,30 @@ export class AnimeNode extends Node {
 	constructor(id: number, metadata: ANIME_DATA) {
 		super(id);
 		this.metadata = metadata;
-		this.addLabel(this.title());
+		this.addLabel(this.truncatedTitle());
 		this.setScale(Math.sqrt(this.metadata.members) / 300);
+
+		settings.subscribe(this.updateBrightness.bind(this));
 	}
 
-	title(): string {
-		return truncateTitle(this.metadata.englishTitle || this.metadata.title);
+	updateBrightness(settings: Settings) {
+		const passingScore = this.metadata.score >= settings.scoreThreshold;
+		const yearInRange = this.metadata.year <= settings.endYear && this.metadata.year >= settings.startYear;
+		const inRecs = this.recommendation_rank <= settings.distance;
+
+		if (passingScore && yearInRange && inRecs) {
+			this.brightness = 1;
+		} else {
+			this.brightness = 0.5;
+		}
+	}
+
+	truncatedTitle(): string {
+		return truncateTitle(nativeTitle(this.metadata));
 	}
 
 	canonicalTitle() {
-		return this.title().toLowerCase().replace(/[^a-z0-9]/g, '_');
+		return this.truncatedTitle().toLowerCase().replace(/[^a-z0-9]/g, '_');
 	}
 
 	addSprite(renderer) {

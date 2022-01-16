@@ -8,7 +8,7 @@ Cluster and visualize relationships between anime on [MyAnimeList](https://myani
 ## Description
 
 
-MAL Map is a web application that visualizes anime relationships on [MyAnimeList](https://myanimelist.net/). Edges are extracted from the reccomendations of users on MAL.
+MAL Map is a web application that visualizes anime relationships on [MyAnimeList](https://myanimelist.net/) and [AniList](https://anilist.co/home). Edges are extracted from the reccomendations of users.
 
 #### Clustering
 
@@ -54,3 +54,4 @@ classification hiérarchique de ses sommets](https://apiacoa.org/publications/20
 #### Data
 
 - [MyAnimeList API](https://myanimelist.net/apiconfig/references/api/v2)
+- [AniList API](https://anilist.gitbook.io/anilist-apiv2-docs/)

@@ -5,6 +5,7 @@ import _ from "lodash";
     import Genres from "./Genres.svelte";
     import Stats from "./Stats.svelte";
     import { selected_anime } from "./store";
+import { nativeTitle } from "./ts/utils";
     let metadata: ANIME_DATA;
     let genres = [];
     selected_anime.subscribe((anime) => {
@@ -24,10 +25,7 @@ import _ from "lodash";
         <a href={metadata.url} target="_blank" rel="noopener noreferrer">
             <img src={metadata.picture} alt="Anime Thumbnail" />
         </a>
-        <h1>{metadata.englishTitle || metadata.title}</h1>
-        {#if metadata.englishTitle && metadata.englishTitle !== metadata.title}
-            <!-- <h4>{metadata.title}</h4> -->
-        {/if}
+        <h1>{nativeTitle(metadata)}</h1>
         <Stats {metadata} />
 
         <Genres {genres} />
