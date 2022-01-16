@@ -1,6 +1,8 @@
 <script lang="ts">
     import Slider from "@smui/slider";
-    import { settings } from "./store";
+    import { completedList, settings } from "./store";
+    import { onMount } from "svelte";
+import { queryUser } from "./ts/utils";
 
     let filters_active = false;
     function clickCollapsible(e: Event) {
@@ -13,6 +15,36 @@
             content.style.maxHeight = content.scrollHeight + "px";
         }
     }
+
+    let username = $settings.username;
+    async function handleSubmit(e: Event) {
+        e.preventDefault();
+        console.log(username);
+        $settings.username = username;
+        if (username === "") {
+            $completedList = [];
+            return;
+        }
+
+        const list = await queryUser(username);
+        if (list === null) {
+            alert("User not found or server error, please try again."); // TODO: prettier error handling
+        } else {
+            $completedList = list;
+        }
+        $settings.distance = $settings.distance; // force update
+    }
+
+    onMount(() => {
+        let input = document.getElementById("mal") as HTMLInputElement;
+        input.addEventListener("keyup", (e) => {
+            if (e.keyCode === 13) {
+                // enter
+                event.preventDefault();
+                handleSubmit(e);
+            }
+        });
+    });
 </script>
 
 <button class="collapsible" on:click={(e) => clickCollapsible(e)}>
@@ -24,61 +56,40 @@
     Filters
 </button>
 <div class="tree-item-children">
-    <!-- <div class="setting-item mod-text">
-                        <div class="setting-item-control">
-                            <div class="text-input-wrapper">
-                                <input
-                                    class="text-input"
-                                    id="mal"
-                                    type="text"
-                                    placeholder="MyAnimeList Username"
-                                    title="Enter your MyAnimeList username and press the search icon"
-                                    bind:value={username}
-                                />
-                                <button
-                                    type="submit"
-                                    id="submit"
-                                    class="text-input-submit-button"
-                                    on:click={handleSubmit}
-                                >
-                                    <i class="fa fa-search" />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {#if $settings.username}
-                        <div class="setting-item mod-slider">
-                            <div class="setting-item-info">
-                                Distance to list
-                            </div>
-                            <div class="setting-item-control">
-                                <input
-                                    class="slider"
-                                    type="range"
-                                    min="0"
-                                    max="1"
-                                    step=".0001"
-                                    bind:value={$settings.distance}
-                                />
-                            </div>
-                        </div>
-                    {/if}
-                    <div class="setting-item mod-slider">
-                        <div class="setting-item-info">Score threshold</div>
-                        <div class="setting-item-control">
-                            <input
-                                class="slider"
-                                type="range"
-                                min="0"
-                                max="1"
-                                step=".0001"
-                                bind:value={scoreThreshold}
-                            />
-                        </div>
-                    </div> 
-  
-                    -->
+    <div class="setting-item mod-text">
+        <div class="setting-item-control">
+            <div class="text-input-wrapper">
+                <input
+                    class="text-input"
+                    id="mal"
+                    type="text"
+                    placeholder="MyAnimeList Username"
+                    title="Enter your MyAnimeList username and press the search icon"
+                    bind:value={username}
+                />
+                <button
+                    type="submit"
+                    id="submit"
+                    class="text-input-submit-button"
+                    on:click={handleSubmit}
+                >
+                    <i class="fa fa-search" />
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="setting-item mod-slider">
+        <div class="setting-item-info">Distance to list: {$settings.distance}</div>
+        <Slider
+            bind:value={$settings.distance}
+            min={0}
+            max={1}
+            step={0.01}
+            label="Distance to user list"
+        />
+    </div>
+
     <div class="setting-item mod-slider">
         <div class="setting-item-info">
             Score threshold: {$settings.scoreThreshold}
@@ -171,5 +182,32 @@
         justify-content: flex-end;
         align-items: center;
         /* display: flex; */
+    }
+    .text-input {
+        width: 100%;
+        height: 30px;
+        border-radius: 4px;
+        outline: none;
+        background: var(--color-d-blacker);
+        border: 1px solid var(--background-modifier-border);
+        font-size: 14px;
+        display: block;
+        color: var(--text-normal);
+    }
+
+    .text-input-wrapper {
+        position: relative;
+        margin: 0;
+    }
+    .text-input-submit-button {
+        height: var(--scale-8-2);
+        width: var(--scale-8-2);
+        top: 8px;
+        right: 8px;
+        color: var(--text-normal);
+        cursor: pointer;
+        position: absolute;
+        background: transparent;
+        border: none;
     }
 </style>

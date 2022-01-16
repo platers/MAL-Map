@@ -14,17 +14,9 @@
     const anime_options = _.values(Anime);
     let sidebar_active = false;
 
-    let username = $settings.username;
     let autocomplete_anime: ANIME_DATA | null = null;
     $: if (autocomplete_anime) {
         $selected_anime = autocomplete_anime;
-    }
-
-    function handleSubmit(e: Event) {
-        e.preventDefault();
-        console.log(username);
-        $settings.username = username;
-        window.location.hash = username;
     }
 
     function getOptionLabel(option) {
@@ -178,34 +170,7 @@
         padding: 2px 6px 2px 0px;
     }
 
-    .text-input {
-        width: 100%;
-        height: 30px;
-        border-radius: 4px;
-        outline: none;
-        background: var(--color-d-blacker);
-        border: 1px solid var(--background-modifier-border);
-        font-size: 14px;
-        display: block;
-        color: var(--text-normal);
-    }
-
-    .text-input-wrapper {
-        position: relative;
-        margin: 0;
-    }
-    .text-input-submit-button {
-        height: var(--scale-8-2);
-        width: var(--scale-8-2);
-        top: 8px;
-        right: 8px;
-        color: var(--text-normal);
-        cursor: pointer;
-        position: absolute;
-        background: transparent;
-        border: none;
-    }
-
+  
     .fold-button {
         position: absolute;
         top: 50%;

@@ -36,6 +36,7 @@ export class Node {
 	scale: number = 1;
 	dist_to_selected: number = NaN;
 	recommendation_score: number = NaN;
+	recommendation_rank: number = 0;
 
 	graphics: Sprite;
 
@@ -134,6 +135,50 @@ export class Node {
 	radius() {
 		return NODE_RADIUS * this.scale;
 	}
+
+	static bfs(start: Node[], all_nodes: Node[]) {
+		const queue = new Set<Node>();
+		for (const node of all_nodes) {
+			node.dist_to_selected = Infinity;
+			node.recommendation_score = 0;
+		}
+
+		for (const node of start) {
+			queue.add(node);
+			node.dist_to_selected = 0;
+			node.recommendation_score = 1;
+		}
+
+		while (queue.size > 0) {
+			const node = queue.values().next().value;
+			queue.delete(node);
+
+			for (const edge of node.edges) {
+				const neighbor = edge.target == node ? edge.source : edge.target;
+				if (neighbor.dist_to_selected < node.dist_to_selected + 1) {
+					continue;
+				}
+
+				neighbor.dist_to_selected = node.dist_to_selected + 1;
+				neighbor.recommendation_score += node.recommendation_score * edge.weight;
+				queue.add(neighbor);
+			}
+		}
+
+		const sorted = [...all_nodes]
+			.sort((a: Node, b: Node) => {
+				if (a.dist_to_selected != b.dist_to_selected)
+					return a.dist_to_selected - b.dist_to_selected;
+				return b.recommendation_score - a.recommendation_score;
+			});
+
+		for (let i = 0; i < sorted.length; i++) {
+			const node = sorted[i];
+			node.recommendation_rank = node.dist_to_selected === 0 ?
+				0 :
+				(i - start.length) / (sorted.length - start.length);
+		}
+	}
 }
 
 
@@ -156,7 +201,9 @@ export class AnimeNode extends Node {
 	updateBrightness(settings: Settings) {
 		const passingScore = this.metadata.score >= settings.scoreThreshold;
 		const yearInRange = this.metadata.year <= settings.endYear && this.metadata.year >= settings.startYear;
-		if (passingScore && yearInRange) {
+		const inRecs = this.recommendation_rank <= settings.distance;
+
+		if (passingScore && yearInRange && inRecs) {
 			this.brightness = 1;
 		} else {
 			this.brightness = 0.5;

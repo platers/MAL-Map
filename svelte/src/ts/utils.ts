@@ -43,6 +43,28 @@ console.log(params_dict);
 
 export function nativeTitle(metadata: ANIME_DATA) {
     const lang = params_dict.language || 'en';
-    console.log(lang);
-    return lang == 'en' ? metadata.englishTitle : metadata.title;
+    return lang == 'en' ? metadata.englishTitle || metadata.title : metadata.title;
+}
+
+async function fetchWithTimeout(resource: string, timeout = 2000) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    const response = await fetch(resource, {
+        signal: controller.signal
+    });
+    clearTimeout(id);
+    return response;
+}
+
+export async function queryUser(username: string) : Promise<number[]> {
+    try {
+        const response = await fetchWithTimeout(`https://api.jikan.moe/v3/user/${username}/animelist/completed`, 8000);
+        const json = await response.json();
+        const anime = json.anime.map(anime => (anime.mal_id as number));
+        console.log('recieved', anime);
+        return anime;
+    } catch (e) {
+        console.log(e);
+        return null;
+    }
 }

@@ -7,7 +7,7 @@
 	import { Edge, LineContainer } from "./ts/edge";
 	import { Viewport } from "pixi-viewport";
 	import { ANIME_DICT } from "../../data-collection/types";
-	import { selected_anime } from "./store";
+	import { completedList, selected_anime, settings } from "./store";
 	import { drawImages, drawLabels } from "./ts/draw";
 	import Edges from "../../data-collection/data/edges.json";
 	import Layout_ from "../../data-collection/data/layout.json";
@@ -214,6 +214,13 @@
 				// update hash
 				params_dict.show = node.canonicalTitle();
 				updateHashParams();
+			});
+
+			completedList.subscribe((list) => {
+				const startNodes = list
+					? list.map((id) => node_map[id]).filter((node) => node)
+					: nodes;
+				Node.bfs(startNodes, nodes);
 			});
 		}
 	});
