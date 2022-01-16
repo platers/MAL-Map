@@ -5,11 +5,11 @@
 
     import AnimeView from "./AnimeView.svelte";
     import Filters from "./Filters.svelte";
-    import { settings, selected_anime } from "./store";
+    import { selected_anime } from "./store";
     import Anime from "../../data-collection/data/min_metadata.json";
     import Autocomplete from "@smui-extra/autocomplete";
     import { ANIME_DATA } from "../../data-collection/types";
-    import { nativeTitle } from "./ts/utils";
+    import { currentLanguage, nativeTitle } from "./ts/utils";
 
     const anime_options = _.values(Anime);
     let sidebar_active = false;
@@ -31,15 +31,6 @@
     }
 
     onMount(() => {
-        // let input = document.getElementById("mal") as HTMLInputElement;
-        // input.addEventListener("keyup", (e) => {
-        //     if (e.keyCode === 13) {
-        //         // enter
-        //         event.preventDefault();
-        //         handleSubmit(e);
-        //     }
-        // });
-
         let drag_button = document.getElementById("fold-button") as HTMLElement;
         let sidebar = document.getElementById("sidebar") as HTMLElement;
         sidebar.style.transition = "left 0.5s";
@@ -85,6 +76,15 @@
             <a href="https://github.com/platers/MAL-Map" class="github-link">
                 <i class="fa fa-github" style="font-size: 30px;" />
             </a>
+            {#if currentLanguage() === "en"}
+                <a href="https://www.malmap.net/#language=jp" class="language-link">
+                    JP
+                </a>
+            {:else}
+                <a href="https://www.malmap.net/#language=en" class="language-link">
+                    EN
+                </a>
+            {/if}
         </div>
         <div class="tree-item graph-control-section">
             <div class="tree-item-self">
@@ -170,7 +170,6 @@
         padding: 2px 6px 2px 0px;
     }
 
-  
     .fold-button {
         position: absolute;
         top: 50%;
@@ -187,6 +186,10 @@
     }
 
     .github-link {
+        color: var(--color-d-gray-20);
+    }
+
+    .language-link {
         color: var(--color-d-gray-20);
     }
 </style>

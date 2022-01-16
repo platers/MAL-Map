@@ -39,11 +39,12 @@ const params = window.location.hash.substring(1).split("&");
 export const params_dict = _.fromPairs(params.map((param) => param.split("=")));
 console.log(params_dict);
 
-
+export function currentLanguage() {
+    return params_dict.language || "en";
+}
 
 export function nativeTitle(metadata: ANIME_DATA) {
-    const lang = params_dict.language || 'en';
-    return lang == 'en' ? metadata.englishTitle || metadata.title : metadata.title;
+    return currentLanguage() == 'en' ? metadata.englishTitle || metadata.title : metadata.title;
 }
 
 export async function queryUser(username: string): Promise<number[]> {
