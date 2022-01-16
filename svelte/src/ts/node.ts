@@ -137,7 +137,6 @@ export class Node {
 	}
 
 	static bfs(start: Node[], all_nodes: Node[]) {
-		console.log("bfs", start);
 		const queue = new Set<Node>();
 		for (const node of all_nodes) {
 			node.dist_to_selected = Infinity;

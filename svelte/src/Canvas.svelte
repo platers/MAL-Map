@@ -65,6 +65,7 @@
 				return;
 			}
 			Node.selected = null;
+			selected_anime.set(undefined); // force update
 			selected_anime.set(null);
 		});
 
