@@ -9,7 +9,6 @@ import { nativeTitle } from "./ts/utils";
     let metadata: ANIME_DATA;
     let genres = [];
     selected_anime.subscribe((anime) => {
-        console.log(anime);
         metadata = anime;
         if (anime) {
             genres = _.clone(anime.genres);

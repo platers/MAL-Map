@@ -239,7 +239,7 @@ export class AnimeNode extends Node {
 			this.sprite = new Sprite(resources[this.metadata.picture].texture);
 			this.sprite.anchor.set(0.5);
 			let ratio = this.sprite.texture.baseTexture.width / this.sprite.texture.baseTexture.height;
-			this.sprite.width = this.graphics.width;
+			this.sprite.width = this.graphics.width * 0.95;
 			this.sprite.height = this.sprite.width / ratio;
 			this.sprite.x = this.x;
 			this.sprite.y = this.y;

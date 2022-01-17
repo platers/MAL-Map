@@ -81,7 +81,7 @@
 			vis_nodes.sort((a, b) => {
 				return a.metadata.popularity - b.metadata.popularity;
 			});
-			vis_nodes = vis_nodes.slice(0, 500);
+			vis_nodes = vis_nodes.slice(0, 1000);
 			for (const node of vis_nodes) {
 				node.update();
 				node.graphics.visible = true;
