@@ -1,11 +1,11 @@
 <script lang="ts">
-import _ from "lodash";
+    import _ from "lodash";
 
     import { ANIME_DATA } from "../../data-collection/types";
     import Genres from "./Genres.svelte";
     import Stats from "./Stats.svelte";
     import { selected_anime } from "./store";
-import { nativeTitle } from "./ts/utils";
+    import { nativeTitle } from "./ts/utils";
     let metadata: ANIME_DATA;
     let genres = [];
     selected_anime.subscribe((anime) => {
