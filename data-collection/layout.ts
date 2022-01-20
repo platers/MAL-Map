@@ -42,6 +42,7 @@ export class Layout {
     simulation = forceSimulation([]).stop();
     done = false;
     tier: number = 0;
+
     constructor(clusters: { [node_id: string]: number[] }, edges: number[][], min_colors = 20) {
         this.Clusters = clusters;
         this.Cluster_Nodes = _.mapValues(clusters, (cluster) => cluster.slice(0, -1));
@@ -49,6 +50,7 @@ export class Layout {
         this.min_colors = min_colors;
         this.Edges = edges;
     }
+
     tick(iters = 1) {
         if (this.simulation.alpha() < 0.01) {
             this.simulation.stop();

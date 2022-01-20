@@ -52,6 +52,7 @@
 		"d3-force": "^3.0.0",
 		"d3-force-reuse": "^1.0.1",
 		"lodash-es": "^4.17.21",
+		"multilevel-clustering": "github:platers/multilevel-clustering",
 		"pixi-viewport": "^4.34.3",
 		"pixi.js": "^6.2.0",
 		"round-corner": "^1.0.2",

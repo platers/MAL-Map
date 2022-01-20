@@ -1,6 +1,6 @@
 import _ from "lodash";
 import Clusters_ from "../../../data-collection/data/clusters.json";
-import { Cluster } from "../../../data-collection/cluster";
+import { Cluster } from "multilevel-clustering";
 import Animes from "../../../data-collection/data/min_metadata.json";
 import { ANIME_DICT } from "../../../data-collection/types";
 export const Clusters = Cluster.fromJSON(Clusters_);
