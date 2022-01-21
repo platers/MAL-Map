@@ -11,7 +11,7 @@
 	import { drawImages, drawLabels } from "./ts/draw";
 	import Edges from "../../data-collection/data/edges.json";
 	import Layout_ from "../../data-collection/data/layout.json";
-	import { Layout } from "../../data-collection/layout";
+	import { Layout } from "constellation-graph";
 	import { Cluster_Nodes } from "./ts/cluster";
 	import { params_dict, updateHashParams } from "./ts/utils";
 	let canvas: HTMLCanvasElement;
@@ -211,9 +211,10 @@
 			});
 
 			completedList.subscribe((list) => {
-				const startNodes = list?.length > 0
-					? list.map((id) => node_map[id]).filter((node) => node)
-					: nodes;
+				const startNodes =
+					list?.length > 0
+						? list.map((id) => node_map[id]).filter((node) => node)
+						: nodes;
 				Node.bfs(startNodes, nodes);
 			});
 		}

@@ -1,5 +1,5 @@
-import { createCluster } from "multilevel-clustering";
-import { Layout } from "./layout";
+import { createCluster } from "constellation-graph";
+import { Layout } from "constellation-graph";
 import { storeEdges } from "./recs";
 import { storeMetadata, getIds, processMetadata, storeAniListMetadata } from "./shows";
 import { ANIME_DICT } from "./types";

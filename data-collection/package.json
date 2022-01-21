@@ -17,6 +17,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.177",
     "cli-progress": "^3.9.1",
+    "constellation-graph": "github:platers/constellation-graph-base",
     "cross-fetch": "^3.1.4",
     "d3-force": "2.1.1",
     "d3-force-reuse": "^1.0.1",

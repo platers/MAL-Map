@@ -49,6 +49,7 @@
 	},
 	"dependencies": {
 		"alpha-shape": "^1.0.0",
+		"constellation-graph": "github:platers/multilevel-clustering",
 		"d3-force": "^3.0.0",
 		"d3-force-reuse": "^1.0.1",
 		"lodash-es": "^4.17.21",
