@@ -1,72 +1,76 @@
 html {
-	width: 100%;
-	height: 100%;
-	padding: 0;
-	margin: 0;
-	overflow: hidden;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
 }
 body {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 div {
-	display: block;
+  display: block;
 }
 
 :root {
-	--color-d-white: hsl(34, 50%, 80%);
-	--color-d-gray: var(--color-d-gray-50);
-	--color-d-gray-10: hsl(34, 18%, 62%); /* Text Faint */
-	--color-d-gray-20: hsl(35, 27%, 55%); /* Tree Item */
-	--color-d-gray-30: hsl(34, 24%, 30%); /* Text Disabled */
-	--color-d-gray-40: hsl(33, 20%, 30%); /* Icon Disabled */
-	--color-d-gray-50: hsl(33, 20%, 20%); /* Border */
-	--color-d-gray-60: hsl(32, 22%, 15%); /* Select Tree Item BG */
-	--color-d-gray-70: hsl(27, 14%, 15%); /* Note BG */
-	--color-d-gray-80: hsl(32, 19%, 13%); /* Status Bar */
-	--color-d-gray-90: hsl(30, 15%, 13%); /* Codes/ YAML*/
-	--interactive-accent: #483699;
-	--mdc-theme-primary: var(--color-d-gray-20);
+  --color-d-white: hsl(34, 50%, 80%);
+  --color-d-gray: var(--color-d-gray-50);
+  --color-d-gray-10: hsl(34, 18%, 62%); /* Text Faint */
+  --color-d-gray-20: hsl(35, 27%, 55%); /* Tree Item */
+  --color-d-gray-30: hsl(34, 24%, 30%); /* Text Disabled */
+  --color-d-gray-40: hsl(33, 20%, 30%); /* Icon Disabled */
+  --color-d-gray-50: hsl(33, 20%, 20%); /* Border */
+  --color-d-gray-60: hsl(32, 22%, 15%); /* Select Tree Item BG */
+  --color-d-gray-70: hsl(27, 14%, 15%); /* Note BG */
+  --color-d-gray-80: hsl(32, 19%, 13%); /* Status Bar */
+  --color-d-gray-90: hsl(30, 15%, 13%); /* Codes/ YAML*/
+  --interactive-accent: #483699;
+  --mdc-theme-primary: var(--color-d-gray-20);
 
-	--color-d-shadow-10: rgba(0, 0, 0, 0.45); /* Multiples of 8 */
-	--background-modifier-border: var(--color-d-gray-40);
-	--scale-8-1: 8px;
-	--scale-8-2: 16px;
-	--scale-8-3: 24px;
-	--scale-8-4: 32px;
-	--scale-8-5: 40px;
-	--scale-8-6: 48px;
-	--scale-8-7: 54px;
-	--scale-8-8: 64px;
-	--scale-8-9: 72px;
-	--scale-8-10: 80px;
-	--text-normal: var(--color-l-gray-50);
-	--text-muted: var(--color-l-gray-60);
-	--text-faint: var(--color-l-gray-50);
-	--font-sans: "Karla", sans-serif;
-	font-family: var(--font-sans);
-	color: var(--color-d-gray-20);
+  --color-d-shadow-10: rgba(0, 0, 0, 0.45); /* Multiples of 8 */
+  --background-modifier-border: var(--color-d-gray-40);
+  --scale-8-1: 8px;
+  --scale-8-2: 16px;
+  --scale-8-3: 24px;
+  --scale-8-4: 32px;
+  --scale-8-5: 40px;
+  --scale-8-6: 48px;
+  --scale-8-7: 54px;
+  --scale-8-8: 64px;
+  --scale-8-9: 72px;
+  --scale-8-10: 80px;
+  --text-normal: var(--color-l-gray-50);
+  --text-muted: var(--color-l-gray-60);
+  --text-faint: var(--color-l-gray-50);
+  --font-sans: "Karla", sans-serif;
+  font-family: var(--font-sans);
+  color: var(--color-d-gray-20);
 
-	.mdc-text-field__input {
-		color: var(--color-d-gray-20) !important;
-		caret-color: var(--color-d-gray-30) !important;
-	}
-	.mdc-floating-label {
-		color: var(--color-d-gray-10) !important;
-	}
-	.mdc-deprecated-list {
-		background-color: var(--color-d-gray-70) !important;
-		// color: var(--text-normal) !important;
-	}
-	.mdc-deprecated-list-item__text {
-		color: var(--color-d-gray-10) !important;
-	}
-	.mdc-slider .mdc-slider__track--active {
-		height: 3px !important;
-	}
+  .mdc-text-field__input {
+    color: var(--color-d-gray-20) !important;
+    caret-color: var(--color-d-gray-30) !important;
+  }
+  .mdc-floating-label {
+    color: var(--color-d-gray-10) !important;
+  }
+  .mdc-deprecated-list {
+    background-color: var(--color-d-gray-70) !important;
+    // color: var(--text-normal) !important;
+  }
+  .mdc-deprecated-list-item__text {
+    color: var(--color-d-gray-10) !important;
+  }
+  .mdc-slider .mdc-slider__track--active {
+    height: 3px !important;
+  }
+  .smui-text-field--standard:not(.mdc-text-field--disabled)
+    .mdc-line-ripple::before {
+    border-bottom-color: var(--color-d-gray-20);
+  }
 }
