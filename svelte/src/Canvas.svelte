@@ -250,7 +250,7 @@
 	border-radius: 6px;
 	border: none;
 	cursor: pointer;
-	color: var(--background-modifier-border);
+	color: var(--color-d-gray-40);
 	font-weight: bold;
 }
 </style>
