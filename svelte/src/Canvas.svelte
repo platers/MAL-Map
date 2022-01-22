@@ -7,14 +7,17 @@
 	import { Edge, LineContainer } from "./ts/edge";
 	import { Viewport } from "pixi-viewport";
 	import { ANIME_DICT } from "../../data-collection/types";
-	import { completedList, selected_anime, settings } from "./store";
+	import { completedList, selected_anime } from "./store";
 	import { drawImages, drawLabels } from "./ts/draw";
 	import Edges from "../../data-collection/data/edges.json";
 	import Layout_ from "../../data-collection/data/layout.json";
 	import { Layout } from "constellation-graph";
 	import { Cluster_Nodes } from "./ts/cluster";
 	import { params_dict, updateHashParams } from "./ts/utils";
+
 	let canvas: HTMLCanvasElement;
+	export let onInit: (nodes: AnimeNode[]) => void;
+	// export let updateBrightness: (filters: any) => void;
 
 	const Metadata = Animes as unknown as ANIME_DICT;
 
@@ -217,6 +220,8 @@
 						: nodes;
 				Node.bfs(startNodes, nodes);
 			});
+
+			onInit(nodes as AnimeNode[]);
 		}
 	});
 </script>

@@ -2,7 +2,7 @@ import { Graphics, BitmapFont, BitmapText, Point, Sprite, Loader, Rectangle } fr
 import { hslToHex, nativeTitle, NodeId, params_dict, truncateTitle } from './utils';
 import { Viewport } from 'pixi-viewport';
 import { ANIME_DATA } from '../../../data-collection/types';
-import { selected_anime, settings, Settings } from '../store';
+import { distance, selected_anime, Settings, username } from '../store';
 import _ from 'lodash';
 import { Edge } from './edge';
 export const NODE_RADIUS = 400; // big so circle is smooth
@@ -194,21 +194,8 @@ export class AnimeNode extends Node {
 		this.metadata = metadata;
 		this.addLabel(this.truncatedTitle());
 		this.setScale(Math.sqrt(this.metadata.members) / 300);
-
-		settings.subscribe(this.updateBrightness.bind(this));
 	}
 
-	updateBrightness(settings: Settings) {
-		const passingScore = this.metadata.score >= settings.scoreThreshold;
-		const yearInRange = this.metadata.year <= settings.endYear && this.metadata.year >= settings.startYear;
-		const inRecs = this.recommendation_rank <= settings.distance;
-
-		if (passingScore && yearInRange && inRecs) {
-			this.brightness = 1;
-		} else {
-			this.brightness = 0.5;
-		}
-	}
 
 	truncatedTitle(): string {
 		return truncateTitle(nativeTitle(this.metadata));
