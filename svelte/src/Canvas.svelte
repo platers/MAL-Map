@@ -246,14 +246,11 @@
 	font-size: 2rem;
 	width: 40px;
 	height: 40px;
-	background:linear-gradient(to bottom, #ededed 5%, #dfdfdf 100%);
-	background-color:#ededed;
-	border-radius:6px;
-	border:1px solid #dcdcdc;
-	cursor:pointer;
-	color:#777777;
-	font-weight:bold;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #ffffff;
+	background-color: var(--color-d-white);
+	border-radius: 6px;
+	border: none;
+	cursor: pointer;
+	color: var(--background-modifier-border);
+	font-weight: bold;
 }
 </style>
