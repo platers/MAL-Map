@@ -1,7 +1,10 @@
 <script lang="ts">
     import Slider from "@smui/slider/src/Slider.svelte";
     import { Writable } from "svelte/store";
-    export let value: Writable<number>;
+    export let range: boolean = false;
+    export let value: Writable<number> = null;
+    export let start: Writable<number> = null;
+    export let end: Writable<number> = null;
     export let min: number;
     export let max: number;
     export let step: number;
@@ -10,9 +13,25 @@
 
 <div class="setting-item mod-slider">
     <div class="setting-item-info">
-        {label}: {$value}
+        {#if range}
+            {label}: {$start} - {$end}
+        {:else}
+            {label}: {$value}
+        {/if}
     </div>
-    <Slider bind:value={$value} {min} {max} {step} {label} />
+    {#if range}
+        <Slider
+            range
+            bind:start={$start}
+            bind:end={$end}
+            {min}
+            {max}
+            {step}
+            {label}
+        />
+    {:else}
+        <Slider bind:value={$value} {min} {max} {step} {label} />
+    {/if}
 </div>
 
 <style>

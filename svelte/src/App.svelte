@@ -8,12 +8,20 @@
     import SidebarHeader from "./SidebarHeader.svelte";
     import Anime from "../../data-collection/data/min_metadata.json";
     import { nativeTitle, queryUser } from "./ts/utils";
-    import { completedList, distance, endYear, scoreThreshold, selected_anime, startYear, username } from "./store";
+    import {
+        completedList,
+        distance,
+        endYear,
+        scoreThreshold,
+        selected_anime,
+        startYear,
+        username,
+    } from "./store";
     import _ from "lodash";
     import { ANIME_DATA } from "../../data-collection/types";
     import TextInput from "./TextInput.svelte";
     import SliderFilter from "./SliderFilter.svelte";
-import { AnimeNode, Node } from "./ts/node";
+    import { AnimeNode, Node } from "./ts/node";
 
     function getOptionLabel(option) {
         if (!option) return "";
@@ -47,7 +55,13 @@ import { AnimeNode, Node } from "./ts/node";
     }
 
     function onInit(nodes: AnimeNode[]) {
-        function updateBrightness(node: AnimeNode, distance: number, scoreThreshold: number, startYear: number, endYear: number) {
+        function updateBrightness(
+            node: AnimeNode,
+            distance: number,
+            scoreThreshold: number,
+            startYear: number,
+            endYear: number
+        ) {
             const passingScore = node.metadata.score >= scoreThreshold;
             const yearInRange =
                 node.metadata.year <= endYear &&
@@ -61,15 +75,26 @@ import { AnimeNode, Node } from "./ts/node";
             }
         }
 
-        distance.subscribe(() => {
-            nodes.forEach(node => updateBrightness(node, $distance, $scoreThreshold, $startYear, $endYear));
-        });
+        function updateAllBrightness(nodes: AnimeNode[]) {
+            nodes.forEach((node) => {
+                updateBrightness(
+                    node,
+                    $distance,
+                    $scoreThreshold,
+                    $startYear,
+                    $endYear
+                );
+            });
+        }
+
+        distance.subscribe(() => updateAllBrightness(nodes));
+        scoreThreshold.subscribe(() => updateAllBrightness(nodes));
+        startYear.subscribe(() => updateAllBrightness(nodes));
+        endYear.subscribe(() => updateAllBrightness(nodes));
     }
 </script>
 
-<Canvas 
-    {onInit}
-/>
+<Canvas {onInit} />
 
 <Sidebar>
     <SidebarHeader
@@ -91,6 +116,22 @@ import { AnimeNode, Node } from "./ts/node";
             min={0}
             max={1}
             step={0.01}
+        />
+        <SliderFilter
+            label="Minimum score"
+            value={scoreThreshold}
+            min={0}
+            max={10}
+            step={0.01}
+        />
+        <SliderFilter
+            range
+            label="Year"
+            start={startYear}
+            end={endYear}
+            min={1960}
+            max={2026}
+            step={1}
         />
     </Filters>
 
