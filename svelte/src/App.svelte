@@ -18,10 +18,13 @@
         username,
     } from "./store";
     import _ from "lodash";
-    import { ANIME_DATA } from "../../data-collection/types";
+    import { ANIME_DATA, ANIME_DICT } from "../../data-collection/types";
     import TextInput from "./TextInput.svelte";
     import SliderFilter from "./SliderFilter.svelte";
-    import { AnimeNode, Node } from "./ts/node";
+    import { FullNode, Node } from "./ts/node";
+	import Animes from "../../data-collection/data/min_metadata.json";
+	import Edges from "../../data-collection/data/edges.json";
+	import Layout_ from "../../data-collection/data/layout.json";
 
     function getOptionLabel(option) {
         if (!option) return "";
@@ -54,9 +57,9 @@
         $distance = $distance; // force update
     }
 
-    function onInit(nodes: AnimeNode[]) {
+    function onInit(nodes: FullNode[], node_map: { [id: number]: FullNode }) {
         function updateBrightness(
-            node: AnimeNode,
+            node: FullNode,
             distance: number,
             scoreThreshold: number,
             startYear: number,
@@ -75,7 +78,7 @@
             }
         }
 
-        function updateAllBrightness(nodes: AnimeNode[]) {
+        function updateAllBrightness(nodes: FullNode[]) {
             nodes.forEach((node) => {
                 updateBrightness(
                     node,
@@ -91,10 +94,25 @@
         scoreThreshold.subscribe(() => updateAllBrightness(nodes));
         startYear.subscribe(() => updateAllBrightness(nodes));
         endYear.subscribe(() => updateAllBrightness(nodes));
+
+        completedList.subscribe((list) => {
+            const startNodes =
+                list?.length > 0
+                    ? list.map((id) => node_map[id]).filter((node) => node)
+                    : nodes;
+            Node.bfs(startNodes, nodes);
+            updateAllBrightness(nodes);
+        });
     }
+
+    const Metadata = Anime as unknown as ANIME_DICT;
 </script>
 
-<Canvas {onInit} />
+<Canvas {onInit} {selected_anime} 
+    {Metadata}
+    Edges={Edges.Edges}
+    {Layout_}
+/>
 
 <Sidebar>
     <SidebarHeader

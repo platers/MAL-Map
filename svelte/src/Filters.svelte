@@ -2,8 +2,7 @@
     let filters_active = false;
     function clickCollapsible(e: Event) {
         filters_active = !filters_active;
-        let target = e.target as HTMLElement;
-        let content = target.nextElementSibling as HTMLElement;
+        let content = document.getElementById("filters");
         if (content.style.maxHeight) {
             content.style.maxHeight = null;
         } else {
@@ -20,36 +19,9 @@
     {/if}
     Filters
 </button>
-<div class="tree-item-children">
+
+<div class="tree-item-children" id="filters">
     <slot />
-
-
-    <!-- <div class="setting-item mod-slider">
-        <div class="setting-item-info">
-            Score threshold: {$settings.scoreThreshold}
-        </div>
-        <Slider
-            bind:value={$settings.scoreThreshold}
-            min={0}
-            max={10}
-            step={0.01}
-            label="Popularity threshold"
-        />
-    </div>
-    <div class="setting-item mod-slider">
-        <div class="setting-item-info">
-            Year: {$settings.startYear} - {$settings.endYear}
-        </div>
-        <Slider
-            range
-            bind:start={$settings.startYear}
-            bind:end={$settings.endYear}
-            min={1960}
-            max={2026}
-            step={1}
-            label="Year range"
-        />
-    </div> -->
 </div>
 
 <style>

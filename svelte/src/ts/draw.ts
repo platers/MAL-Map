@@ -1,10 +1,10 @@
 import { Viewport } from "pixi-viewport";
-import { rectIntersectsRect } from "./utils";
-import { AnimeNode } from "./node";
+import { rectIntersectsRect } from "./base_utils";
+import { FullNode } from "./node";
 import _ from 'lodash';
 import { Tier } from "./cluster";
 
-function getViewportNodes(nodes: AnimeNode[], viewport: Viewport) {
+function getViewportNodes(nodes: FullNode[], viewport: Viewport) {
     const bounds = viewport.getVisibleBounds();
     bounds.pad(bounds.width * 0.2, bounds.height * .1);
     return nodes.filter((node) => {
@@ -12,7 +12,7 @@ function getViewportNodes(nodes: AnimeNode[], viewport: Viewport) {
     });
 }
 
-export function drawLabels(nodes: AnimeNode[], viewport: Viewport, max_labels = 20) {
+export function drawLabels(nodes: FullNode[], viewport: Viewport, max_labels = 20) {
     const prev_visible_nodes = nodes.filter((node) => {
         return node.label.visible;
     });
@@ -62,7 +62,7 @@ export function drawLabels(nodes: AnimeNode[], viewport: Viewport, max_labels = 
 }
 
 
-export function drawImages(nodes: AnimeNode[], viewport: Viewport) {
+export function drawImages(nodes: FullNode[], viewport: Viewport) {
     for (let node of nodes) {
         if (node.sprite) {
             node.sprite.visible = false;
@@ -70,7 +70,7 @@ export function drawImages(nodes: AnimeNode[], viewport: Viewport) {
         }
     }
 
-    const visible_nodes = getViewportNodes(nodes, viewport) as AnimeNode[];
+    const visible_nodes = getViewportNodes(nodes, viewport) as FullNode[];
     if (viewport.screenWidthInWorldPixels > 400) {
         return;
     }
