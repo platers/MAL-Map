@@ -1,5 +1,5 @@
 import { writable, Writable } from "svelte/store";
-import { ANIME_DATA } from "../../data-collection/types";
+import { ANIME_DATA } from "./ts/utils";
 
 export type Settings = {
     scoreThreshold: number;

@@ -6,8 +6,7 @@
     import Searchbar from "./Searchbar.svelte";
     import Sidebar from "./Sidebar.svelte";
     import SidebarHeader from "./SidebarHeader.svelte";
-    import Anime from "../../data-collection/data/min_metadata.json";
-    import { nativeTitle, queryUser } from "./ts/utils";
+    import { ANIME_DATA, ANIME_DICT, Metadata, queryUser } from "./ts/utils";
     import {
         completedList,
         distance,
@@ -18,11 +17,9 @@
         username,
     } from "./store";
     import _ from "lodash";
-    import { ANIME_DATA, ANIME_DICT } from "../../data-collection/types";
     import TextInput from "./TextInput.svelte";
     import SliderFilter from "./SliderFilter.svelte";
     import { FullNode, Node } from "./ts/node";
-	import Animes from "../../data-collection/data/min_metadata.json";
 	import Edges from "../../data-collection/data/edges.json";
 	import Layout_ from "../../data-collection/data/layout.json";
 
@@ -30,14 +27,14 @@
         if (!option) return "";
         if (!option.englishTitle) return option.title;
         if (option.title === option.englishTitle) return option.title;
-        if (nativeTitle(option) === option.englishTitle) {
+        if (option.nativeTitle() === option.englishTitle) {
             return `${option.englishTitle} (${option.title})`;
         } else {
             return `${option.title} (${option.englishTitle})`;
         }
     }
 
-    let options = _.values(Anime) as ANIME_DATA[];
+    let options = _.values(Metadata) as ANIME_DATA[];
 
     async function handleSubmit(e: Event, input: string) {
         e.preventDefault();
@@ -65,10 +62,11 @@
             startYear: number,
             endYear: number
         ) {
-            const passingScore = node.metadata.score >= scoreThreshold;
+            const metadata = node.metadata as ANIME_DATA;
+            const passingScore = metadata.score >= scoreThreshold;
             const yearInRange =
-                node.metadata.year <= endYear &&
-                node.metadata.year >= startYear;
+                metadata.year <= endYear &&
+                metadata.year >= startYear;
             const inRecs = node.recommendation_rank <= distance;
 
             if (passingScore && yearInRange && inRecs) {
@@ -104,12 +102,10 @@
             updateAllBrightness(nodes);
         });
     }
-
-    const Metadata = Anime as unknown as ANIME_DICT;
 </script>
 
 <Canvas {onInit} {selected_anime} 
-    {Metadata}
+   Metadata_={Metadata}
     Edges={Edges.Edges}
     {Layout_}
 />

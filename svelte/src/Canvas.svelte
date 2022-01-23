@@ -7,9 +7,9 @@
 	import { Viewport } from "pixi-viewport";
 	import { drawImages, drawLabels } from "./ts/draw";
 	import { Layout } from "constellation-graph";
-	import { Cluster_Nodes } from "./ts/cluster";
-	import { params_dict, updateHashParams } from "./ts/base_utils";
+	import { METADATA, METADATA_DICT, params_dict, updateHashParams } from "./ts/base_utils";
 	import { Writable } from "svelte/store";
+import { Cluster_Nodes } from "./ts/utils";
 
 	let canvas: HTMLCanvasElement;
 	export let onInit: (
@@ -18,7 +18,7 @@
 	) => void;
 	export let selected_anime: Writable<any>;
 
-	export let Metadata: any;
+	export let Metadata_: METADATA_DICT;
 	export let Edges: (number|string)[][];
 	export let Layout_: any;
 
@@ -51,7 +51,7 @@
 
 		app.stage.addChild(viewport);
 
-		console.log(`${_.size(Metadata)} anime`);
+		console.log(`${_.size(Metadata_)} anime`);
 
 		let nodes: Node[] = [];
 		let edges = [];
@@ -155,7 +155,7 @@
 			let node_map: { [id: number]: Node } = {};
 			nodes = _.entries(layout_json.nodes).map(([id_, pos]) => {
 				let id = parseInt(id_);
-				let new_node = FullNode.fromPos(id, pos, Metadata[id]);
+				let new_node = FullNode.fromPos(id, pos, Metadata_[id]);
 				node_map[id] = new_node;
 				return new_node;
 			});
@@ -184,7 +184,7 @@
 
 			if (params_dict.show) {
 				const node = (nodes as FullNode[]).find(
-					(node) => node.canonicalTitle() === params_dict.show
+					(node) => node.metadata.canonicalTitle() === params_dict.show
 				);
 				if (node) {
 					selected_anime.set(node.metadata);
@@ -210,7 +210,7 @@
 				}
 
 				// update hash
-				params_dict.show = node.canonicalTitle();
+				params_dict.show = node.metadata.canonicalTitle();
 				updateHashParams();
 			});
 

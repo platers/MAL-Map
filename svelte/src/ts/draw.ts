@@ -2,7 +2,7 @@ import { Viewport } from "pixi-viewport";
 import { rectIntersectsRect } from "./base_utils";
 import { FullNode } from "./node";
 import _ from 'lodash';
-import { Tier } from "./cluster";
+import { Tier } from "./utils";
 
 function getViewportNodes(nodes: FullNode[], viewport: Viewport) {
     const bounds = viewport.getVisibleBounds();

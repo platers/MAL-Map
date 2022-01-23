@@ -1,11 +1,10 @@
 import { Graphics, BitmapFont, BitmapText, Point, Sprite, Loader, Rectangle } from 'pixi.js';
-import { nativeTitle, truncateTitle } from './utils';
 import { Viewport } from 'pixi-viewport';
-import { ANIME_DATA } from '../../../data-collection/types';
 import _ from 'lodash';
 import { Edge } from './edge';
 import { Writable } from 'svelte/store';
-import { hslToHex } from './base_utils';
+import { hslToHex, METADATA } from './base_utils';
+import { ANIME_DATA } from './utils';
 export const NODE_RADIUS = 400; // big so circle is smooth
 
 
@@ -22,7 +21,7 @@ BitmapFont.from("TitleFont", {
 
 export class Node {
 	static selected: Node = null;
-	static selected_anime: Writable<ANIME_DATA>;
+	static selected_anime: Writable<METADATA>;
 	static hovered: Node = null;
 
 	id: number;
@@ -188,24 +187,16 @@ export class FullNode extends Node {
 	static username = '';
 	static watched_nodes = [];
 	static last_click_time = 0;
-	metadata: ANIME_DATA;
+	metadata: METADATA;
 	sprite: Sprite = null;
 
-	constructor(id: number, metadata: ANIME_DATA) {
+	constructor(id: number, metadata: METADATA) {
 		super(id);
 		this.metadata = metadata;
-		this.addLabel(this.truncatedTitle());
+		this.addLabel(this.metadata.title);
 		this.setScale(Math.sqrt(this.metadata.members) / 300);
 	}
 
-
-	truncatedTitle(): string {
-		return truncateTitle(nativeTitle(this.metadata));
-	}
-
-	canonicalTitle() {
-		return this.truncatedTitle().toLowerCase().replace(/[^a-z0-9]/g, '_');
-	}
 
 	addSprite(renderer) {
 		super.addSprite(renderer);
@@ -254,7 +245,7 @@ export class FullNode extends Node {
 		});
 	}
 
-	static fromPos(id: number, pos, metadata: ANIME_DATA) {
+	static fromPos(id: number, pos, metadata: METADATA) {
 		const node = new FullNode(id, metadata);
 		node.x = pos.x;
 		node.y = pos.y;
