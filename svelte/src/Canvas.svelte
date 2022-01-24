@@ -7,13 +7,10 @@
 	import { Viewport } from "pixi-viewport";
 	import { drawImages, drawLabels } from "./ts/draw";
 	import { Layout } from "constellation-graph";
-	import {
-		METADATA_DICT,
-		params_dict,
-		updateHashParams,
-	} from "./ts/base_utils";
+	import { params_dict, updateHashParams } from "./ts/base_utils";
 	import { Writable } from "svelte/store";
 	import { Cluster_Nodes } from "./ts/utils";
+	import { METADATA_DICT } from "./ts/base_types";
 
 	let canvas: HTMLCanvasElement;
 	export let onInit: (

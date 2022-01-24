@@ -1,20 +1,7 @@
 import { Rectangle } from "pixi.js";
-import _ from "lodash";
+import * as _ from "lodash";
 import { Cluster } from "constellation-graph";
-
-export class METADATA {
-    id: number;
-    title: string;
-    display_title?: string;
-    picture?: string;
-    members: number;
-
-    canonicalTitle() {
-        return this.title.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    }
-
-};
-export type METADATA_DICT = { [id: number]: METADATA; };
+import { METADATA_DICT } from "./base_types";
 
 
 export function hslToHex(h, s, l) {
@@ -37,6 +24,7 @@ export function rectIntersectsRect(a: Rectangle, b: Rectangle) {
 }
 
 const params = window.location.hash.substring(1).split("&");
+console.log(params);
 export const params_dict = _.fromPairs(params.map((param) => param.split("=")));
 console.log(params_dict);
 

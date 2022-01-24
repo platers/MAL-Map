@@ -6,7 +6,7 @@
     import Searchbar from "./Searchbar.svelte";
     import Sidebar from "./Sidebar.svelte";
     import SidebarHeader from "./SidebarHeader.svelte";
-    import { ANIME_DATA, ANIME_DICT, Metadata, queryUser } from "./ts/utils";
+    import { Metadata, nativeTitle, queryUser } from "./ts/utils";
     import {
         completedList,
         distance,
@@ -22,12 +22,13 @@
     import { FullNode, Node } from "./ts/node";
 	import Edges from "../../data-collection/data/edges.json";
 	import Layout_ from "../../data-collection/data/layout.json";
+import { ANIME_DATA } from "./ts/types";
 
     function getOptionLabel(option) {
         if (!option) return "";
         if (!option.englishTitle) return option.title;
         if (option.title === option.englishTitle) return option.title;
-        if (option.nativeTitle() === option.englishTitle) {
+        if (nativeTitle(option) === option.englishTitle) {
             return `${option.englishTitle} (${option.title})`;
         } else {
             return `${option.title} (${option.englishTitle})`;

@@ -4,7 +4,8 @@
     import Genres from "./Genres.svelte";
     import Stats from "./Stats.svelte";
     import { selected_anime } from "./store";
-    import { ANIME_DATA } from "./ts/utils";
+    import { nativeTitle } from "./ts/utils";
+    import { ANIME_DATA } from "./ts/types";
     let metadata: ANIME_DATA;
     let genres = [];
     selected_anime.subscribe((anime) => {
@@ -23,7 +24,7 @@
         <a href={metadata.url} target="_blank" rel="noopener noreferrer">
             <img src={metadata.picture} alt="Anime Thumbnail" />
         </a>
-        <h1>{metadata.nativeTitle()}</h1>
+        <h1>{nativeTitle(metadata)}</h1>
         <Stats {metadata} />
 
         <Genres {genres} />

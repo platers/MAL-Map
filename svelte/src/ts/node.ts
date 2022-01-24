@@ -3,8 +3,9 @@ import { Viewport } from 'pixi-viewport';
 import _ from 'lodash';
 import { Edge } from './edge';
 import { Writable } from 'svelte/store';
-import { hslToHex, METADATA } from './base_utils';
-import { ANIME_DATA } from './utils';
+import { hslToHex } from './base_utils';
+import { ANIME_DATA } from './types';
+import { METADATA } from './base_types';
 export const NODE_RADIUS = 400; // big so circle is smooth
 
 
