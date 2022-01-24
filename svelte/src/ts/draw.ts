@@ -27,7 +27,7 @@ export function drawLabels(nodes: FullNode[], viewport: Viewport, max_labels = 2
         if (Tier[a.id] !== Tier[b.id]) {
             return Tier[a.id] - Tier[b.id];
         }
-        return a.metadata.popularity - b.metadata.popularity;
+        return b.metadata.members - a.metadata.members;
     });
     let good_nodes = visible_nodes.slice(0, max_labels);
     const kept_nodes = _.intersection(prev_visible_nodes, visible_nodes);

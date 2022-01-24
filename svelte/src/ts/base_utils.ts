@@ -5,28 +5,14 @@ import { Cluster } from "constellation-graph";
 export class METADATA {
     id: number;
     title: string;
+    display_title?: string;
     picture?: string;
-    genres?: string[];
-    popularity: number;
     members: number;
 
     canonicalTitle() {
         return this.title.toLowerCase().replace(/[^a-z0-9]/g, '_');
     }
 
-    // truncateTitle() {
-    //     let title = this.nativeTitle();
-    //     // discard after colon
-    //     const colon = title.indexOf(': ');
-    //     if (colon !== -1) {
-    //         title = title.slice(0, colon);
-    //     }
-    //     // title = unidecode(title);
-    //     return title;
-    // }
-    // nativeTitle() {
-    //     return currentLanguage() == 'en' ? this.englishTitle || this.title : this.title;
-    // }
 };
 export type METADATA_DICT = { [id: number]: METADATA; };
 
@@ -66,7 +52,7 @@ export function getTiers(cluster: Cluster, Metadata: METADATA_DICT) {
 
     function getHead(cluster: Cluster) {
         let potential_heads: number[] = cluster.nodes.concat(cluster.clusters.map(getHead));
-        let most_popular = _.minBy(potential_heads, (node) => Metadata[node].popularity);
+        let most_popular = _.maxBy(potential_heads, (node) => Metadata[node].members);
 
         for (let n of cluster.nodes) {
             tiers[n] = Infinity;

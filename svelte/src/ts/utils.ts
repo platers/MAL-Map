@@ -24,7 +24,12 @@ export class ANIME_DATA extends METADATA {
     recommendations: { id: number, count: number }[];
     year: number;
     nsfw: boolean;
+
+    nativeTitle() {
+        return currentLanguage() == 'en' ? this.englishTitle || this.title : this.title;
+    }
 };
+
 export type ANIME_DICT = { [id: number]: ANIME_DATA; };
 
 export async function queryUser(username: string): Promise<number[]> {
@@ -51,9 +56,22 @@ export async function queryUser(username: string): Promise<number[]> {
     }
 }
 
+function displayTitle(metadata: any) {
+    let title = currentLanguage() == 'en' ?
+        metadata.englishTitle ||
+        metadata.title : metadata.title;
+    // discard after colon
+    const colon = title.indexOf(': ');
+    if (colon !== -1) {
+        title = title.slice(0, colon);
+    }
+    return title;
+}
 import Anime from "../../../data-collection/data/min_metadata.json";
 import Clusters_ from "../../../data-collection/data/clusters.json";
-export const Metadata = Anime as unknown as ANIME_DICT;
+export const Metadata = _.mapValues(Anime, (metadata: any) => Object.assign(new ANIME_DATA(), metadata, {
+    display_title: displayTitle(metadata),
+}));
 export const Clusters = Cluster.fromJSON(Clusters_);
 export const Tier: { [id: number]: number } = getTiers(Clusters, Metadata);
 export const Cluster_Nodes = Clusters.toNodeDict();

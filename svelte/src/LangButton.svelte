@@ -1,5 +1,7 @@
 <script lang="ts">
-    import { currentLanguage, params_dict, updateHashParams } from "./ts/utils";
+import { params_dict, updateHashParams } from "./ts/base_utils";
+
+    import { currentLanguage } from "./ts/utils";
 
     function changeLanguage() {
         const newLang = currentLanguage() === "en" ? "ja" : "en";

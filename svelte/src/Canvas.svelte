@@ -7,9 +7,13 @@
 	import { Viewport } from "pixi-viewport";
 	import { drawImages, drawLabels } from "./ts/draw";
 	import { Layout } from "constellation-graph";
-	import { METADATA, METADATA_DICT, params_dict, updateHashParams } from "./ts/base_utils";
+	import {
+		METADATA_DICT,
+		params_dict,
+		updateHashParams,
+	} from "./ts/base_utils";
 	import { Writable } from "svelte/store";
-import { Cluster_Nodes } from "./ts/utils";
+	import { Cluster_Nodes } from "./ts/utils";
 
 	let canvas: HTMLCanvasElement;
 	export let onInit: (
@@ -19,7 +23,7 @@ import { Cluster_Nodes } from "./ts/utils";
 	export let selected_anime: Writable<any>;
 
 	export let Metadata_: METADATA_DICT;
-	export let Edges: (number|string)[][];
+	export let Edges: (number | string)[][];
 	export let Layout_: any;
 
 	onMount(async () => {
@@ -83,7 +87,7 @@ import { Cluster_Nodes } from "./ts/utils";
 				viewport_bounds.contains(node.x, node.y)
 			) as FullNode[];
 			vis_nodes.sort((a, b) => {
-				return a.metadata.popularity - b.metadata.popularity;
+				return b.metadata.members - a.metadata.members;
 			});
 			vis_nodes = vis_nodes.slice(0, 1000);
 			for (const node of vis_nodes) {
@@ -184,7 +188,8 @@ import { Cluster_Nodes } from "./ts/utils";
 
 			if (params_dict.show) {
 				const node = (nodes as FullNode[]).find(
-					(node) => node.metadata.canonicalTitle() === params_dict.show
+					(node) =>
+						node.metadata.canonicalTitle() === params_dict.show
 				);
 				if (node) {
 					selected_anime.set(node.metadata);
@@ -214,10 +219,7 @@ import { Cluster_Nodes } from "./ts/utils";
 				updateHashParams();
 			});
 
-			onInit(
-				nodes as FullNode[],
-				node_map as { [id: number]: FullNode }
-			);
+			onInit(nodes as FullNode[], node_map as { [id: number]: FullNode });
 
 			Node.selected_anime = selected_anime;
 		}

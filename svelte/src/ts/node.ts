@@ -193,7 +193,7 @@ export class FullNode extends Node {
 	constructor(id: number, metadata: METADATA) {
 		super(id);
 		this.metadata = metadata;
-		this.addLabel(this.metadata.title);
+		this.addLabel(this.metadata.display_title || this.metadata.title);
 		this.setScale(Math.sqrt(this.metadata.members) / 300);
 	}
 
