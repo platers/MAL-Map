@@ -1,8 +1,8 @@
-import { createCluster } from "constellation-graph";
-import { Layout } from "constellation-graph";
+import { createCluster } from "./cluster";
+import { Layout } from "./layout";
 import { storeEdges } from "./recs";
 import { storeMetadata, getIds, processMetadata, storeAniListMetadata } from "./shows";
-import { ANIME_DICT } from "./types";
+import { ANIME_DICT } from "../svelte/src/ts/types";
 const fs = require('fs');
 
 main();

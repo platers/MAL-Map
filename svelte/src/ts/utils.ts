@@ -1,4 +1,4 @@
-import { Cluster } from "constellation-graph";
+import { Cluster } from "../../../data-collection/cluster";
 import * as _ from "lodash";
 import { getTiers, params_dict } from "./base_utils";
 

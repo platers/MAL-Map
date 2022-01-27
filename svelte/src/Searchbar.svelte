@@ -1,7 +1,7 @@
 <script lang="ts">
     import _ from "lodash";
     import Autocomplete from "@smui-extra/autocomplete";
-    import { ANIME_DATA } from "../../data-collection/types";
+    import { ANIME_DATA } from "./ts/types";
     import { Writable } from "svelte/store";
 
     export let selected_anime: Writable<ANIME_DATA>;

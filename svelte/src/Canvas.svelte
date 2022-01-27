@@ -6,7 +6,7 @@
 	import { Edge, LineContainer } from "./ts/edge";
 	import { Viewport } from "pixi-viewport";
 	import { drawImages, drawLabels } from "./ts/draw";
-	import { Layout } from "constellation-graph";
+	import { Layout } from "../../data-collection/layout";
 	import { params_dict, updateHashParams } from "./ts/base_utils";
 	import { Writable } from "svelte/store";
 	import { Cluster_Nodes } from "./ts/utils";
