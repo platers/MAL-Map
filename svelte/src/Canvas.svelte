@@ -19,9 +19,11 @@
 	) => void;
 	export let selected_anime: Writable<any>;
 
+
 	export let Metadata_: METADATA_DICT;
 	export let Edges: (number | string)[][];
 	export let Layout_: any;
+  const SCALE_BY = 0.25;
 
 	onMount(async () => {
 		const app = new Application({
@@ -33,10 +35,19 @@
 			backgroundColor: 0x2c2620,
 			resizeTo: window,
 		});
+		const zoomIn = document.getElementById("zoom-in") as HTMLElement;
+        const zoomOut = document.getElementById("zoom-out") as HTMLElement;
 		const circle_template: Graphics = new Graphics();
 		circle_template.beginFill(0xffffff);
 		circle_template.drawCircle(0, 0, NODE_RADIUS);
 		const texture = app.renderer.generateTexture(circle_template);
+
+		zoomIn.addEventListener("click", function(){
+		    viewport.zoomPercent(SCALE_BY, true);
+         }, false);
+		 zoomOut.addEventListener("click", function(){
+			viewport.zoomPercent(-SCALE_BY, true);
+         }, false);
 
 		const viewport = new Viewport({
 			interaction: app.renderer.plugins.interaction,
@@ -224,3 +235,26 @@
 </script>
 
 <canvas bind:this={canvas} />
+<div class="zoom-options">
+	<button class="zoom-option" id="zoom-in">+</button>
+	<button class="zoom-option" id="zoom-out">-</button>
+</div>
+
+<style>
+.zoom-options {
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+}
+.zoom-option {
+	font-size: 2rem;
+	width: 40px;
+	height: 40px;
+	background-color: var(--color-d-white);
+	border-radius: 6px;
+	border: none;
+	cursor: pointer;
+	color: var(--color-d-gray-40);
+	font-weight: bold;
+}
+</style>
