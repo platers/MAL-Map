@@ -42,6 +42,7 @@ export class Layout {
     simulation = forceSimulation([]).stop();
     done = false;
     tier: number = 0;
+
     constructor(clusters: { [node_id: string]: number[] }, edges: number[][], min_colors = 20) {
         this.Clusters = clusters;
         this.Cluster_Nodes = _.mapValues(clusters, (cluster) => cluster.slice(0, -1));
@@ -49,6 +50,7 @@ export class Layout {
         this.min_colors = min_colors;
         this.Edges = edges;
     }
+
     tick(iters = 1) {
         if (this.simulation.alpha() < 0.01) {
             this.simulation.stop();
@@ -148,11 +150,8 @@ export class Layout {
         }
 
         const scale = 1;
-        // const new_old_ratio = ids.length / old_nodes.length;
-        // console.log(new_old_ratio);
-
         const nodes = ids.map(id => {
-            const node = old_nodes.find(n => n.id === parents[id]);
+            const node = old_nodes.find(n => n.id === parents[id])!;
             const new_node = new Node(id);
             new_node.x = node.x * scale + jiggle();
             new_node.y = node.y * scale + jiggle();
@@ -173,7 +172,7 @@ export class Layout {
         }
     }
 
-    getClusterEdges(tier: number, nodes): Edge[] {
+    getClusterEdges(tier: number, nodes: Node[]): Edge[] {
         const node_dict: { [key: number]: Node; } = {};
         for (const node of nodes) {
             node_dict[node.id] = node;
@@ -210,7 +209,7 @@ export class Layout {
         }
 
         // normalize weights
-        const max_weight = _.max(_.values(edge_dict));
+        const max_weight = _.max(_.values(edge_dict))!;
         _.forEach(edge_dict, (weight, key) => {
             if (tier === this.max_tier()) {
                 edge_dict[key] = Math.sqrt(weight) / 3;

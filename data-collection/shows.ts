@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 const fs = require('fs');
 const cliProgress = require('cli-progress');
 import fetch from "cross-fetch";
-import { ANIME_DATA, ANIME_DICT } from './types';
+import { ANIME_DATA, ANIME_DICT } from '../svelte/src/ts/types';
 
 const KEY = 'e0e691a27a61d8cca4d3446774022c20'; // please be responsible
 
@@ -157,7 +157,7 @@ function filterMetadata(metadata: ANIME_DICT): ANIME_DICT {
 }
 
 function parseMetadata(json): ANIME_DATA {
-    return {
+    return Object.assign(new ANIME_DATA(), {
         id: json.id,
         title: json.title,
         englishTitle: json.alternative_titles?.en,
@@ -177,7 +177,7 @@ function parseMetadata(json): ANIME_DATA {
         recommendations: json.recommendations?.map(r => ({ id: r.node.id, count: r.num_recommendations })),
         year: json.start_season?.year,
         nsfw: json.nsfw !== 'white',
-    }
+    });
 }
 
 export function augmentMetadata(metadata: ANIME_DICT, anilist_metadata: ANILIST_RECS) {

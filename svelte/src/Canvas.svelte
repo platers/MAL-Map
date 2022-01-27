@@ -2,22 +2,28 @@
 	import { onMount } from "svelte";
 	import { Application, Graphics, Point } from "pixi.js";
 	import _ from "lodash";
-	import Animes from "../../data-collection/data/min_metadata.json";
-	import { AnimeNode, Node, NODE_RADIUS } from "./ts/node";
+	import { FullNode, Node, NODE_RADIUS } from "./ts/node";
 	import { Edge, LineContainer } from "./ts/edge";
 	import { Viewport } from "pixi-viewport";
-	import { ANIME_DICT } from "../../data-collection/types";
-	import { completedList, selected_anime, settings } from "./store";
 	import { drawImages, drawLabels } from "./ts/draw";
-	import Edges from "../../data-collection/data/edges.json";
-	import Layout_ from "../../data-collection/data/layout.json";
 	import { Layout } from "../../data-collection/layout";
-	import { Cluster_Nodes } from "./ts/cluster";
-	import { params_dict, updateHashParams } from "./ts/utils";
-	let canvas: HTMLCanvasElement;
+	import { params_dict, updateHashParams } from "./ts/base_utils";
+	import { Writable } from "svelte/store";
+	import { Cluster_Nodes } from "./ts/utils";
+	import { METADATA_DICT } from "./ts/base_types";
 
-	const Metadata = Animes as unknown as ANIME_DICT;
-	const SCALE_BY = 0.25;
+	let canvas: HTMLCanvasElement;
+	export let onInit: (
+		nodes: FullNode[],
+		node_map: { [id: number]: FullNode }
+	) => void;
+	export let selected_anime: Writable<any>;
+
+
+	export let Metadata_: METADATA_DICT;
+	export let Edges: (number | string)[][];
+	export let Layout_: any;
+  const SCALE_BY = 0.25;
 
 	onMount(async () => {
 		const app = new Application({
@@ -57,14 +63,14 @@
 
 		app.stage.addChild(viewport);
 
-		console.log(`${_.size(Metadata)} anime`);
+		console.log(`${_.size(Metadata_)} anime`);
 
 		let nodes: Node[] = [];
 		let edges = [];
 		let line_container = new LineContainer(20);
 
 		viewport.on("clicked", (event) => {
-			if (AnimeNode.last_click_time > Date.now() - 200) {
+			if (FullNode.last_click_time > Date.now() - 200) {
 				return;
 			}
 			Node.selected = null;
@@ -87,9 +93,9 @@
 			viewport_bounds.pad(viewport_bounds.width * 0.2);
 			let vis_nodes = nodes.filter((node) =>
 				viewport_bounds.contains(node.x, node.y)
-			) as AnimeNode[];
+			) as FullNode[];
 			vis_nodes.sort((a, b) => {
-				return a.metadata.popularity - b.metadata.popularity;
+				return b.metadata.members - a.metadata.members;
 			});
 			vis_nodes = vis_nodes.slice(0, 1000);
 			for (const node of vis_nodes) {
@@ -101,12 +107,12 @@
 				node.label.visible = false;
 			}
 
-			drawLabels(vis_nodes as AnimeNode[], viewport);
-			drawImages(nodes as AnimeNode[], viewport);
+			drawLabels(vis_nodes as FullNode[], viewport);
+			drawImages(nodes as FullNode[], viewport);
 			// line_container.setEdges(edges);
 		}
 
-		const all_edges = Edges["Edges"].map((v) => {
+		const all_edges = Edges.map((v) => {
 			return [v[0] as number, v[1] as number, parseFloat(v[2] as string)];
 		});
 		const layout = new Layout(Cluster_Nodes, all_edges, 20);
@@ -161,7 +167,7 @@
 			let node_map: { [id: number]: Node } = {};
 			nodes = _.entries(layout_json.nodes).map(([id_, pos]) => {
 				let id = parseInt(id_);
-				let new_node = AnimeNode.fromPos(id, pos, Metadata[id]);
+				let new_node = FullNode.fromPos(id, pos, Metadata_[id]);
 				node_map[id] = new_node;
 				return new_node;
 			});
@@ -189,8 +195,9 @@
 			viewport.setZoom(0.01);
 
 			if (params_dict.show) {
-				const node = (nodes as AnimeNode[]).find(
-					(node) => node.canonicalTitle() === params_dict.show
+				const node = (nodes as FullNode[]).find(
+					(node) =>
+						node.metadata.canonicalTitle() === params_dict.show
 				);
 				if (node) {
 					selected_anime.set(node.metadata);
@@ -204,8 +211,8 @@
 					return;
 				}
 
-				const node = node_map[anime.id] as AnimeNode;
-				if (AnimeNode.last_click_time < Date.now() - 200) {
+				const node = node_map[anime.id] as FullNode;
+				if (FullNode.last_click_time < Date.now() - 200) {
 					Node.selected = node;
 					viewport.animate({
 						position: new Point(node.x, node.y),
@@ -216,16 +223,13 @@
 				}
 
 				// update hash
-				params_dict.show = node.canonicalTitle();
+				params_dict.show = node.metadata.canonicalTitle();
 				updateHashParams();
 			});
 
-			completedList.subscribe((list) => {
-				const startNodes = list?.length > 0
-					? list.map((id) => node_map[id]).filter((node) => node)
-					: nodes;
-				Node.bfs(startNodes, nodes);
-			});
+			onInit(nodes as FullNode[], node_map as { [id: number]: FullNode });
+
+			Node.selected_anime = selected_anime;
 		}
 	});
 </script>

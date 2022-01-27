@@ -1,10 +1,7 @@
 import { writable, Writable } from "svelte/store";
-import { ANIME_DATA } from "../../data-collection/types";
-import { params_dict } from "./ts/utils";
+import { ANIME_DATA } from "./ts/types";
 
-export type Theme = "light" | "dark";
 export type Settings = {
-    theme: Theme;
     scoreThreshold: number;
     popularityThreshold: number;
     startYear: number;
@@ -13,16 +10,13 @@ export type Settings = {
     distance: number;
 };
 
-export const settings: Writable<Settings> = writable({
-    theme: "dark",
-    scoreThreshold: 0,
-    popularityThreshold: 0,
-    startYear: 1960,
-    endYear: 2025,
-    username: "",
-    distance: 0,
-});
-
-export const completedList: Writable<number[]> = writable([]);
+export const scoreThreshold: Writable<number> = writable(0);
+export const popularityThreshold: Writable<number> = writable(0);
+export const startYear: Writable<number> = writable(1960);
+export const endYear: Writable<number> = writable(2025);
+export const distance: Writable<number> = writable(0);
+export const username: Writable<string> = writable("");
 
 export const selected_anime: Writable<ANIME_DATA> = writable();
+
+export const completedList: Writable<number[]> = writable([]);

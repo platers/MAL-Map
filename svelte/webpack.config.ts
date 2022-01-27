@@ -62,7 +62,11 @@ const config: Configuration = {
 			svelte: path.resolve('node_modules', 'svelte')
 		},
 		extensions: ['.mjs', '.js', '.ts', '.svelte'],
-		mainFields: ['svelte', 'browser', 'module', 'main']
+		mainFields: ['svelte', 'browser', 'module', 'main'],
+		fallback: {
+			"child_process": false,
+			"fs": false,
+		}
 	},
 	output: {
 		path: path.resolve(__dirname, 'public/build'),
