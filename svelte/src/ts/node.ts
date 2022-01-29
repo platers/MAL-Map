@@ -1,10 +1,10 @@
 import { Graphics, BitmapFont, BitmapText, Point, Sprite, Loader, Rectangle } from 'pixi.js';
-import { hslToHex, nativeTitle, NodeId, params_dict, truncateTitle } from './utils';
 import { Viewport } from 'pixi-viewport';
-import { ANIME_DATA } from '../../../data-collection/types';
-import { selected_anime, settings, Settings } from '../store';
 import _ from 'lodash';
 import { Edge } from './edge';
+import { Writable } from 'svelte/store';
+import { hslToHex } from './base_utils';
+import { METADATA } from './base_types';
 export const NODE_RADIUS = 400; // big so circle is smooth
 
 
@@ -21,9 +21,10 @@ BitmapFont.from("TitleFont", {
 
 export class Node {
 	static selected: Node = null;
+	static selected_anime: Writable<METADATA>;
 	static hovered: Node = null;
 
-	id: NodeId;
+	id: number;
 
 	x: number = NaN;
 	y: number = NaN;
@@ -46,7 +47,7 @@ export class Node {
 
 	label: BitmapText;
 
-	constructor(id: NodeId) {
+	constructor(id: number) {
 		this.id = id;
 
 	}
@@ -182,50 +183,29 @@ export class Node {
 }
 
 
-export class AnimeNode extends Node {
+export class FullNode extends Node {
 	static username = '';
 	static watched_nodes = [];
 	static last_click_time = 0;
-	metadata: ANIME_DATA;
+	metadata: METADATA;
 	sprite: Sprite = null;
 
-	constructor(id: number, metadata: ANIME_DATA) {
+	constructor(id: number, metadata: METADATA) {
 		super(id);
 		this.metadata = metadata;
-		this.addLabel(this.truncatedTitle());
+		this.addLabel(this.metadata.display_title || this.metadata.title);
 		this.setScale(Math.sqrt(this.metadata.members) / 300);
-
-		settings.subscribe(this.updateBrightness.bind(this));
 	}
 
-	updateBrightness(settings: Settings) {
-		const passingScore = this.metadata.score >= settings.scoreThreshold;
-		const yearInRange = this.metadata.year <= settings.endYear && this.metadata.year >= settings.startYear;
-		const inRecs = this.recommendation_rank <= settings.distance;
-
-		if (passingScore && yearInRange && inRecs) {
-			this.brightness = 1;
-		} else {
-			this.brightness = 0.5;
-		}
-	}
-
-	truncatedTitle(): string {
-		return truncateTitle(nativeTitle(this.metadata));
-	}
-
-	canonicalTitle() {
-		return this.truncatedTitle().toLowerCase().replace(/[^a-z0-9]/g, '_');
-	}
 
 	addSprite(renderer) {
 		super.addSprite(renderer);
 		this.graphics.on('pointerdown', () => {
-			AnimeNode.last_click_time = Date.now();
+			FullNode.last_click_time = Date.now();
 		});
 		this.graphics.on('pointerup', () => {
-			if (Date.now() - AnimeNode.last_click_time < 200) {
-				selected_anime.set(this.metadata);
+			if (Date.now() - FullNode.last_click_time < 200) {
+				Node.selected_anime.set(this.metadata);
 				Node.selected = this;
 			}
 		});
@@ -254,19 +234,19 @@ export class AnimeNode extends Node {
 			this.sprite.on('pointerover', () => Node.hovered = this);
 			this.sprite.on('pointerout', () => Node.hovered = null);
 			this.sprite.on('pointerdown', () => {
-				AnimeNode.last_click_time = Date.now();
+				FullNode.last_click_time = Date.now();
 			});
 			this.sprite.on('pointerup', () => {
-				if (Date.now() - AnimeNode.last_click_time < 200) {
-					selected_anime.set(this.metadata);
+				if (Date.now() - FullNode.last_click_time < 200) {
+					Node.selected_anime.set(this.metadata);
 					Node.selected = this;
 				}
 			});
 		});
 	}
 
-	static fromPos(id: number, pos, metadata: ANIME_DATA) {
-		const node = new AnimeNode(id, metadata);
+	static fromPos(id: number, pos, metadata: METADATA) {
+		const node = new FullNode(id, metadata);
 		node.x = pos.x;
 		node.y = pos.y;
 		node.hue = pos.hue;

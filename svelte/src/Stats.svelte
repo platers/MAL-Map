@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ANIME_DATA } from "../../data-collection/types";
+    import { ANIME_DATA } from "./ts/types";
     export let metadata: ANIME_DATA;
     let stats: { name: string; value: string }[];
     $: stats = [
