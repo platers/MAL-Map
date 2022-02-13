@@ -23,11 +23,7 @@ async function main() {
     const edges = storeEdges(metadata);
 
     const root_cluster = await createCluster(edges);
-    let start = Date.now();
-    root_cluster.merge();
-    console.log(`Merging took ${(Date.now() - start) / 1000}s`);
-    fs.writeFileSync('data/clusters.json', JSON.stringify(root_cluster.toJSON(), null, 2));
-
+   
     const layout = new Layout(root_cluster.toNodeDict(), edges, 20);
     while (!layout.done) {
         layout.tick();
