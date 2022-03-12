@@ -178,7 +178,7 @@ function execShellCommand(cmd: string) {
     });
 }
 
-export async function createCluster(edges: Edge[], jarPath='data/clustering.jar', edgePath='data/edges.txt', partitionPath='data/partitions.txt') {
+export async function createCluster(edges: Edge[], edgePath='data/edges.txt', clusterPath='data/clusters.json') {
     const out = edges
         .map(e => `${e[0]} ${e[1]} ${e[2]}`)
         .join('\n');
@@ -186,23 +186,12 @@ export async function createCluster(edges: Edge[], jarPath='data/clustering.jar'
 
     console.log('Creating clusters...');
     let start = Date.now();
-    await execShellCommand(`java -jar ${jarPath} ${edgePath} -recursive ${partitionPath} -minsize 15 -recrandom 50 -reduction 0.3`);
+    await execShellCommand(`python3 cluster.py ${edgePath} ${clusterPath}`);
     console.log(`Clustering took ${(Date.now() - start) / 1000}s`);
 
     // Process clusters
-
     Cluster.setEdges(edges);
-    const clusters: number[][] = fs.readFileSync(partitionPath).toString()
-        .trim()
-        .split('\n')
-        .map(l => {
-            return l.split('\t').map(s => parseInt(s));
-        });
-    const root = new Cluster(0, 0);
-    for (let v of clusters) {
-        const id = v[0];
-        root.insert(id, v.slice(1));
-    }
-
+    const root = Cluster.fromJSON(JSON.parse(fs.readFileSync(clusterPath, 'utf8')));
+    root.merge();
     return root;
 }
