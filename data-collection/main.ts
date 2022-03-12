@@ -15,6 +15,8 @@ async function main() {
         metadata = processMetadata(metadata_json, anilist_metadata_json);
     } else {
         const ids = await getIds();
+        // fs.writeFileSync('data/metadata.json', '{}');
+        // fs.writeFileSync('data/metadata-anilist.json', '{}');
         const metadata_json = await storeMetadata(ids);
         const anilist_metadata_json = await storeAniListMetadata(ids);
         metadata = processMetadata(metadata_json, anilist_metadata_json);
