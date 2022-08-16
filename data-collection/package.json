@@ -4,8 +4,8 @@
   "scripts": {
     "build": "tsc *.ts",
     "dev": "tsc-watch *.ts",
-    "all": "npm run build && node main.js",
-    "cached": "npm run build && node main.js cached"
+    "layout": "npm run build && node main.js",
+    "cached": "npm run build && node main.js reset"
   },
   "author": "",
   "license": "ISC",
