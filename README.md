@@ -3,16 +3,16 @@
 Cluster and visualize relationships between anime on [MyAnimeList](https://myanimelist.net/).
 
 <!-- Overview image -->
+
 ![](assets/overview.png)
 
 ## Description
-
 
 MAL Map is a web application that visualizes anime relationships on [MyAnimeList](https://myanimelist.net/) and [AniList](https://anilist.co/home). Edges are extracted from the recomendations of users.
 
 #### Clustering
 
-The graph is clustered with multi-level modularity clustering, using [code by Fabrice Rossi](https://apiacoa.org/research/software/graph/index.en.html). Some clusters are merged to produce a simpler visualization.
+The graph is clustered with multi-level modularity clustering. Some clusters are merged to produce a simpler visualization.
 
 #### Layout
 
@@ -26,7 +26,7 @@ It should be reasonably easy to adapt this application to other domains, feel fr
 
 ## Contributing
 
-Pull requests are welcome! 
+Pull requests are welcome!
 
 ### Building
 
@@ -47,7 +47,7 @@ MAL Map is two projects: a backend node app for collecting data and clustering, 
 #### Clustering
 
 - [Représentation d’un grand réseau à partir d’une
-classification hiérarchique de ses sommets](https://apiacoa.org/publications/2011/rossivilla-vialaneix2011societe-fran-caise.pdf)
+  classification hiérarchique de ses sommets](https://apiacoa.org/publications/2011/rossivilla-vialaneix2011societe-fran-caise.pdf)
 - https://apiacoa.org/research/software/graph/index.en.html
 
 #### Layout

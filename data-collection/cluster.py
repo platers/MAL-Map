@@ -1,7 +1,8 @@
 import networkx as nx
-from cdlib import algorithms
+from cdlib import algorithms, evaluation
 import json
 import sys
+
 
 def loadGraph(fileName):
     # Load edges from file in format:
@@ -14,16 +15,15 @@ def loadGraph(fileName):
             G.add_edge(node1, node2, weight=float(weight))
     return G
 
+
 def getComs(G):
     coms = algorithms.infomap(G)
     return coms
 
-def getSubgraph(G, nodes):
-    # Return subgraph of G with only nodes in nodes
-    return G.subgraph(nodes)
 
 class Cluster:
     max_id = 0
+
     def __init__(self, G, tier=0):
         self.G = G
         self.tier = tier
@@ -43,26 +43,30 @@ class Cluster:
         if len(partitions) == 1:
             self.nodes = nodes
             return
-        
-        self.clusters = list(map(lambda x: Cluster(getSubgraph(G, x), tier + 1), partitions))
+
+        self.clusters = list(
+            map(lambda x: Cluster(G.subgraph(x), tier + 1), partitions)
+        )
 
     def __dict__(self):
         return {
             "id": self.id,
             "tier": self.tier,
             "nodes": list(map(lambda x: int(x), self.nodes)),
-            "clusters": list(map(lambda x: x.__dict__(), self.clusters))
+            "clusters": list(map(lambda x: x.__dict__(), self.clusters)),
         }
 
     def toJSON(self):
         return json.dumps(self.__dict__())
 
+
 if __name__ == "__main__":
     G = loadGraph(sys.argv[1])
     coms = getComs(G)
     print(len(coms.communities), list(map(len, coms.communities)))
+    print(evaluation.z_modularity(G, coms))
     C = Cluster(G)
 
     # Write to file
     with open(sys.argv[2], "w") as f:
-        f.write(C.toJSON()) 
+        f.write(C.toJSON())

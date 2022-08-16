@@ -4,28 +4,35 @@ import { storeEdges } from "./recs";
 import { storeMetadata, getIds, processMetadata, storeAniListMetadata } from "./shows";
 import { ANIME_DICT } from "../svelte/src/ts/types";
 const fs = require('fs');
+const MAL_METADATA_FILENAME = 'data/metadata.json';
+const ANILIST_METADATA_FILENAME = 'data/metadata-anilist.json';
 
 main();
 
 async function main() {
-    let metadata: ANIME_DICT = {};
-    if (process.argv.length === 3 && process.argv[2] === 'cached') {
-        const metadata_json = JSON.parse(fs.readFileSync('data/metadata.json').toString());
-        const anilist_metadata_json = JSON.parse(fs.readFileSync('data/metadata-anilist.json').toString());
-        metadata = processMetadata(metadata_json, anilist_metadata_json);
-    } else {
+    // If reset flag, delete existing metadata and pull it again. Takes hours.
+    if (process.argv.length === 3 && process.argv[2] === 'reset') {
         const ids = await getIds();
-        // fs.writeFileSync('data/metadata.json', '{}');
-        // fs.writeFileSync('data/metadata-anilist.json', '{}');
-        const metadata_json = await storeMetadata(ids);
-        const anilist_metadata_json = await storeAniListMetadata(ids);
-        metadata = processMetadata(metadata_json, anilist_metadata_json);
+        fs.writeFileSync(MAL_METADATA_FILENAME, '{}');
+        fs.writeFileSync(ANILIST_METADATA_FILENAME, '{}');
+        await storeMetadata(ids);
+        await storeAniListMetadata(ids);
     }
 
+    // Load metadata
+    const metadata_json = JSON.parse(fs.readFileSync(MAL_METADATA_FILENAME).toString());
+    const anilist_metadata_json = JSON.parse(fs.readFileSync(ANILIST_METADATA_FILENAME).toString());
+    let metadata: ANIME_DICT = processMetadata(metadata_json, anilist_metadata_json);
+
+    // Get edges
     const edges = storeEdges(metadata);
 
+    // Create clusters
     const root_cluster = await createCluster(edges);
+    console.log("Finished clustering");
    
+    // Layout clusters
+    console.log("Starting layout");
     const layout = new Layout(root_cluster.toNodeDict(), edges, 20);
     while (!layout.done) {
         layout.tick();

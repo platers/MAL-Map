@@ -190,8 +190,11 @@ export async function createCluster(edges: Edge[], edgePath='data/edges.txt', cl
     console.log(`Clustering took ${(Date.now() - start) / 1000}s`);
 
     // Process clusters
+    console.log('Merging small clusters...');
     Cluster.setEdges(edges);
     const root = Cluster.fromJSON(JSON.parse(fs.readFileSync(clusterPath, 'utf8')));
     root.merge();
+    // Write clusters to file
+    fs.writeFileSync(clusterPath, JSON.stringify(root.toJSON()));
     return root;
 }
