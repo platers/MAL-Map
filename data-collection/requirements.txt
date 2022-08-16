@@ -1,0 +1,2 @@
+cdlib==0.2.5
+networkx==2.6.3

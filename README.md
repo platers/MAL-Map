@@ -29,7 +29,7 @@ MAL Map is two projects: a backend node app for collecting data and clustering, 
 #### Building the backend
 
 1. Open the `/data-collection` directory and run `npm ci` to install all dependencies.
-2. Python3 is used for clustering. Install `networkx` and `cdlib` with `pip3 install networkx cdlib`.
+2. Python3 is used for clustering. Install `networkx` and `cdlib` with `pip install -r requirements.txt`.
 3. Run `npm run reset` to build and run the whole data pipeline. This will pull all data from MAL/Anilist and create various txt and json files for the frontend. Use `npm run layout` to skip the data collection step.
 
 #### Building the frontend
