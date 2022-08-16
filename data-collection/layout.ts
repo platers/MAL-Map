@@ -68,7 +68,7 @@ export class Layout {
             nodes = this.newClusterNodes(nodes, this.tier);
             let edges = this.getClusterEdges(this.tier, nodes);
             this.tier++;
-            console.log(`tier ${this.tier}`);
+            console.log(`Laying out cluster tier ${this.tier}...`);
 
             this.simulation.nodes(nodes);
             this.simulation.force(
