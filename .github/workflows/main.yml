@@ -17,13 +17,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
-          
+
       - name: Run data pipeline
         env:
           MAL_KEY: ${{ secrets.MAL_KEY }}
         run: |
           npm ci
-          npm run all
+          npm run layout
         working-directory: ./data-collection
 
       - name: Install
