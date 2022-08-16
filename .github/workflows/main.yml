@@ -13,18 +13,14 @@ jobs:
         working-directory: ./svelte
 
     steps:
-      - name: Install Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.9"
-          cache: "pip" # caching pip dependencies
+
+      - name: Install Python Dependencies
         run: pip install -r requirements.txt
         working-directory: ./data-collection
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false
 
       - name: Run data pipeline
         env:
@@ -36,10 +32,12 @@ jobs:
 
       - name: Install
         run: npm ci
+        working-directory: ./svelte
 
       - name: Build
         run: |
           npm run build
+        working-directory: ./svelte
 
       - name: Deploy to GH Page
         uses: JamesIves/github-pages-deploy-action@4.1.1
