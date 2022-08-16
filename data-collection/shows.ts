@@ -176,7 +176,7 @@ function parseMetadata(json): ANIME_DATA {
         })),
         recommendations: json.recommendations?.map(r => ({ id: r.node.id, count: r.num_recommendations })),
         year: json.start_season?.year,
-        nsfw: json.nsfw !== 'white',
+        nsfw: !['white', 'gray'].includes(json.nsfw),
     });
 }
 
@@ -252,8 +252,8 @@ function mergeSeasons(data: ANIME_DICT): ANIME_DICT {
             }
             related = newRelated;
         }
-        related = related.filter(id => data[id]);
-
+        related = related.filter(id => data[id] && data[id].score);
+        if (related.length < 2) return show.id
         return _.minBy(related, id => data[id].popularity);
     }
 }
