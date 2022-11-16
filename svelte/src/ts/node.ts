@@ -1,6 +1,6 @@
 import { Graphics, BitmapFont, BitmapText, Point, Sprite, Loader, Rectangle } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
-import _ from 'lodash';
+// import _ from 'lodash';
 import { Edge } from './edge';
 import { Writable } from 'svelte/store';
 import { hslToHex } from './base_utils';
@@ -8,9 +8,9 @@ import { METADATA } from './base_types';
 export const NODE_RADIUS = 400; // big so circle is smooth
 
 
-export function createCircleSprite(texture): Sprite {
-	return new Sprite(texture);
-}
+// export function createCircleSprite(texture): Sprite {
+// 	return new Sprite(texture);
+// }
 
 BitmapFont.from("TitleFont", {
 	fill: 0xe6cfb3,
@@ -43,7 +43,7 @@ export class Node {
 
 	neighbors: Node[] = [];
 	edges: Edge[] = [];
-	all_neighbors: Node[] = [];
+	// all_neighbors: Node[] = [];
 
 	label: BitmapText;
 
@@ -125,17 +125,17 @@ export class Node {
 		return Math.sqrt(Math.pow(this.x - node.x, 2) + Math.pow(this.y - node.y, 2));
 	}
 
-	norm() {
-		return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
-	}
+	// norm() {
+	// 	return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+	// }
 
 	setScale(scale: number) {
 		this.scale = scale;
 	}
 
-	radius() {
-		return NODE_RADIUS * this.scale;
-	}
+	// radius() {
+	// 	return NODE_RADIUS * this.scale;
+	// }
 
 	static bfs(start: Node[], all_nodes: Node[]) {
 		const queue = new Set<Node>();
@@ -184,8 +184,8 @@ export class Node {
 
 
 export class FullNode extends Node {
-	static username = '';
-	static watched_nodes = [];
+	// static username = '';
+	// static watched_nodes = [];
 	static last_click_time = 0;
 	metadata: METADATA;
 	sprite: Sprite = null;

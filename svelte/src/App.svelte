@@ -13,10 +13,8 @@
         scoreThreshold,
         selected_movie,
         startYear,
-        username,
     } from "./store";
     import _ from "lodash";
-    import TextInput from "./TextInput.svelte";
     import SliderFilter from "./SliderFilter.svelte";
     import { FullNode, Node } from "./ts/node";
 	import Edges from "../../data-collection/data/edges.json";

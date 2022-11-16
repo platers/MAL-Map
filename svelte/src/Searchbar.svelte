@@ -1,5 +1,5 @@
 <script lang="ts">
-    import _ from "lodash";
+    // import _ from "lodash";
     import Autocomplete from "@smui-extra/autocomplete";
     import { MOVIE_DATA } from "./ts/types";
     import { Writable } from "svelte/store";

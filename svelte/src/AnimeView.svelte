@@ -47,12 +47,12 @@
         margin-top: 8px;
         margin-bottom: 8px;
     }
-    h4 {
-        padding-top: 0;
-        margin: 0;
-        font-weight: 50;
-        opacity: 0.5;
-    }
+    //h4 {
+    //    padding-top: 0;
+    //    margin: 0;
+    //    font-weight: 50;
+    //    opacity: 0.5;
+    //}
     a {
         color: var(--text-normal);
         text-decoration: none;

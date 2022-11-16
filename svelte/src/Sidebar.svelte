@@ -1,5 +1,5 @@
 <script lang="ts">
-  import _ from "lodash";
+  // import _ from "lodash";
   import { onMount } from "svelte";
   import { selected_movie } from "./store";
 
@@ -11,10 +11,10 @@
     let sidebar = document.getElementById("sidebar") as HTMLElement;
     sidebar.style.transition = "left 0.5s";
 
-    open_button.addEventListener("pointerup", (e) => {
+    open_button.addEventListener("pointerup", (_) => {
       openSidebar();
     });
-    close_button.addEventListener("pointerup", (e) => {
+    close_button.addEventListener("pointerup", (_) => {
       closeSidebar();
     });
     selected_movie.subscribe((selected) => {
@@ -39,14 +39,14 @@
 
 <button class="open-button" id="open-button">
   {#if !sidebar_active}
-    <i class="fa fa-bars" />
+    <i class="fa fa-bars"></i>
   {/if}
 </button>
 
 <aside id="sidebar">
   <div class="sidebarWrapper">
     <button class="close-button" id="close-button">
-      <i class="fa fa-chevron-left" />
+      <i class="fa fa-chevron-left"></i>
     </button>
 
     <slot name="top-header" />

@@ -1,4 +1,4 @@
-import * as _ from 'lodash-es';
+// import * as _ from 'lodash-es';
 import { Node } from './node';
 import { Graphics } from 'pixi.js';
 
