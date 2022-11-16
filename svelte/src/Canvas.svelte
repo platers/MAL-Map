@@ -17,7 +17,7 @@
 		nodes: FullNode[],
 		node_map: { [id: number]: FullNode }
 	) => void;
-	export let selected_anime: Writable<any>;
+	export let selected_movie: Writable<any>;
 
 	export let Metadata_: METADATA_DICT;
 	export let Edges: (number | string)[][];
@@ -81,8 +81,8 @@
 				return;
 			}
 			Node.selected = null;
-			selected_anime.set(undefined); // force update
-			selected_anime.set(null);
+			selected_movie.set(undefined); // force update
+			selected_movie.set(null);
 		});
 
 		// Render loop
@@ -208,11 +208,11 @@
 						node.metadata.canonicalTitle() === params_dict.show
 				);
 				if (node) {
-					selected_anime.set(node.metadata);
+					selected_movie.set(node.metadata);
 				}
 			}
 
-			selected_anime.subscribe((anime) => {
+			selected_movie.subscribe((anime) => {
 				if (!anime) {
 					params_dict.show = null;
 					updateHashParams();
@@ -237,7 +237,7 @@
 
 			onInit(nodes as FullNode[], node_map as { [id: number]: FullNode });
 
-			Node.selected_anime = selected_anime;
+			Node.selected_movie = selected_movie;
 		}
 	});
 </script>

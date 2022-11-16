@@ -3,17 +3,17 @@
 
     import Genres from "./Genres.svelte";
     import Stats from "./Stats.svelte";
-    import { selected_anime } from "./store";
+    import { selected_movie } from "./store";
     import { nativeTitle } from "./ts/utils";
     import { MOVIE_DATA } from "./ts/types";
     let metadata: MOVIE_DATA;
     let genres = [];
-    selected_anime.subscribe((anime) => {
-        metadata = anime;
-        if (anime) {
-            genres = _.clone(anime.genres);
-            if (anime.year) {
-                genres.push(anime.year.toString());
+    selected_movie.subscribe((movie) => {
+        metadata = movie;
+        if (movie) {
+            genres = _.clone(movie.genres);
+            if (movie.year) {
+                genres.push(movie.year.toString());
             }
         }
     });

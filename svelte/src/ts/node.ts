@@ -1,6 +1,5 @@
 import { Graphics, BitmapFont, BitmapText, Point, Sprite, Loader, Rectangle } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
-import _ from 'lodash';
 import { Edge } from './edge';
 import { Writable } from 'svelte/store';
 import { hslToHex } from './base_utils';
@@ -21,7 +20,7 @@ BitmapFont.from("TitleFont", {
 
 export class Node {
 	static selected: Node = null;
-	static selected_anime: Writable<METADATA>;
+	static selected_movie: Writable<METADATA>;
 	static hovered: Node = null;
 
 	id: number;
@@ -194,7 +193,7 @@ export class FullNode extends Node {
 		super(id);
 		this.metadata = metadata;
 		this.addLabel(this.metadata.title || this.metadata.original_title);
-		this.setScale(Math.sqrt(this.metadata.members) / 50);
+		this.setScale(Math.sqrt(this.metadata.score));
 	}
 
 
@@ -205,7 +204,7 @@ export class FullNode extends Node {
 		});
 		this.graphics.on('pointerup', () => {
 			if (Date.now() - FullNode.last_click_time < 200) {
-				Node.selected_anime.set(this.metadata);
+				Node.selected_movie.set(this.metadata);
 				Node.selected = this;
 			}
 		});
@@ -238,7 +237,7 @@ export class FullNode extends Node {
 			});
 			this.sprite.on('pointerup', () => {
 				if (Date.now() - FullNode.last_click_time < 200) {
-					Node.selected_anime.set(this.metadata);
+					Node.selected_movie.set(this.metadata);
 					Node.selected = this;
 				}
 			});

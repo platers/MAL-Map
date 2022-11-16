@@ -9,10 +9,9 @@
     import { Metadata, nativeTitle } from "./ts/utils";
     import {
         completedList,
-        distance,
         endYear,
         scoreThreshold,
-        selected_anime,
+        selected_movie,
         startYear,
         username,
     } from "./store";
@@ -58,7 +57,6 @@ import { MOVIE_DATA } from "./ts/types";
     function onInit(nodes: FullNode[], node_map: { [id: number]: FullNode }) {
         function updateBrightness(
             node: FullNode,
-            distance: number,
             scoreThreshold: number,
             startYear: number,
             endYear: number
@@ -68,12 +66,11 @@ import { MOVIE_DATA } from "./ts/types";
             const yearInRange =
                 metadata.year <= endYear &&
                 metadata.year >= startYear;
-            const inRecs = node.recommendation_rank <= distance;
 
-            if (passingScore && yearInRange && inRecs) {
+            if (passingScore && yearInRange ) {
                 node.brightness = 1;
             } else {
-                node.brightness = 0.5;
+                node.brightness = 0.2;
             }
         }
 
@@ -81,7 +78,6 @@ import { MOVIE_DATA } from "./ts/types";
             nodes.forEach((node) => {
                 updateBrightness(
                     node,
-                    $distance,
                     $scoreThreshold,
                     $startYear,
                     $endYear
@@ -89,7 +85,6 @@ import { MOVIE_DATA } from "./ts/types";
             });
         }
 
-        distance.subscribe(() => updateAllBrightness(nodes));
         scoreThreshold.subscribe(() => updateAllBrightness(nodes));
         startYear.subscribe(() => updateAllBrightness(nodes));
         endYear.subscribe(() => updateAllBrightness(nodes));
@@ -105,7 +100,7 @@ import { MOVIE_DATA } from "./ts/types";
     }
 </script>
 
-<Canvas {onInit} {selected_anime} 
+<Canvas {onInit} {selected_movie}
    Metadata_={Metadata}
     Edges={Edges.Edges}
     {Layout_}
@@ -118,20 +113,13 @@ import { MOVIE_DATA } from "./ts/types";
     >
         <LangButton />
     </SidebarHeader>
-    <Searchbar slot="searchbar" {selected_anime} {options} {getOptionLabel} />
+    <Searchbar slot="searchbar" {selected_movie} {options} {getOptionLabel} />
     <Filters slot="filters">
 <!--        <TextInput-->
 <!--            placeholder="MyAnimeList Username"-->
 <!--            title="Enter your MyAnimeList username and press the search icon"-->
 <!--            {handleSubmit}-->
 <!--        />-->
-        <SliderFilter
-            label="Distance to user watched list"
-            value={distance}
-            min={0}
-            max={1}
-            step={0.01}
-        />
         <SliderFilter
             label="Minimum score"
             value={scoreThreshold}
@@ -144,7 +132,7 @@ import { MOVIE_DATA } from "./ts/types";
             label="Year"
             start={startYear}
             end={endYear}
-            min={1960}
+            min={1900}
             max={2026}
             step={1}
         />

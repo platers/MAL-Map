@@ -4,13 +4,13 @@
     import { MOVIE_DATA } from "./ts/types";
     import { Writable } from "svelte/store";
 
-    export let selected_anime: Writable<MOVIE_DATA>;
+    export let selected_movie: Writable<MOVIE_DATA>;
     export let options: MOVIE_DATA[];
     export let getOptionLabel: (option: MOVIE_DATA) => string;
 
     let autocomplete_anime: MOVIE_DATA | null = null;
     $: if (autocomplete_anime) {
-        $selected_anime = autocomplete_anime;
+        $selected_movie = autocomplete_anime;
     }
 </script>
 
@@ -41,8 +41,8 @@
                 .slice(0, 10);
         }}
         bind:value={autocomplete_anime}
-        placeholder="Search for an anime"
-        label="Search Anime"
+        placeholder="Search for a movie"
+        label="Search Movie"
     />
     <i class="fa fa-search search-icon"></i>
 </div>

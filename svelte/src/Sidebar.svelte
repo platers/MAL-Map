@@ -1,7 +1,7 @@
 <script lang="ts">
   import _ from "lodash";
   import { onMount } from "svelte";
-  import { selected_anime } from "./store";
+  import { selected_movie } from "./store";
 
   let sidebar_active = false;
 
@@ -17,7 +17,7 @@
     close_button.addEventListener("pointerup", (e) => {
       closeSidebar();
     });
-    selected_anime.subscribe((selected) => {
+    selected_movie.subscribe((selected) => {
       if (selected) {
         openSidebar();
       } else {
