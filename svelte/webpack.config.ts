@@ -159,9 +159,9 @@ const config: Configuration = {
 	},
 	devServer: {
 		hot: true,
-		stats: 'errors-only',
-		contentBase: 'public',
-		watchContentBase: true,
+		// stats: 'errors-only',
+		// contentBase: 'public',
+		// watchContentBase: true,
 		headers: {
 			'Access-Control-Allow-Origin': '*',
 			"Access-Control-Allow-Methods": "*",
