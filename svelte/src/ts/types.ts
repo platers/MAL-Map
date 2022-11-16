@@ -13,6 +13,8 @@ export class MOVIE_DATA extends METADATA {
     members: number;
     picture: string;
     score: number;
+    adult: boolean;
+    video: boolean;
 }
 
 export type MOVIE_DICT = { [id: number]: MOVIE_DATA; };

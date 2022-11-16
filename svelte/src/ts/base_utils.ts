@@ -42,10 +42,6 @@ export function getTiers(cluster: Cluster, Metadata: METADATA_DICT) {
         let potential_heads: number[] = cluster.nodes.concat(cluster.clusters.map(getHead));
         let most_popular = _.maxBy(potential_heads, (node) => Metadata[node].score);
 
-        console.log('potential_heads');
-        console.log(potential_heads);
-        console.log('most_popular');
-        console.log(most_popular);
         for (let n of cluster.nodes) {
             tiers[n] = Infinity;
         }

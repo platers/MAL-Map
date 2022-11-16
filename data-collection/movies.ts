@@ -10,17 +10,22 @@ const KEY = config['API_KEY'];
 export async function getIds() {
     console.log('Getting ids from TMDb');
     const ids = [];
-    const url = `https://api.themoviedb.org/3/list/634?api_key=${KEY}`; //IMDB 634 KOEN 8228166
-    const response = await fetch(url, {
-        headers: {
-            'api_key': KEY,
+
+    for (let i = 1; i <= 100; i++) {
+        // https://api.themoviedb.org/3/movie/popular?api_key=0e9c7a63a1bc4d8309d3290e6d92782d&page=100
+        const url = `https://api.themoviedb.org/3/movie/popular?api_key=${KEY}&page=${i}`; //IMDB 634 KOEN 8228166
+        const response = await fetch(url, {
+            headers: {
+                'api_key': KEY,
+            }
+        });
+        const json = await response.json();
+        for (const movie of json.results) {
+            ids.push(movie.id);
         }
-    });
-    const json = await response.json();
-    for (const movie of json.items) {
-        ids.push(movie.id);
+        await new Promise(resolve => setTimeout(resolve, 600));
+
     }
-    await new Promise(resolve => setTimeout(resolve, 600));
 
     const uniqueIds = _.uniq(ids);
 
@@ -74,14 +79,15 @@ export async function storeMetadata(ids: number[] = [], filename = 'data/metadat
 function filterMetadata(metadata: MOVIE_DICT): MOVIE_DICT {
     let filtered = {};
     for (const id in metadata) {
-        const show = metadata[id];
-        // if (show.score && ['tv'].includes(show.type) && !show.nsfw) {
-        //     filtered[id] = show;
-        // }
+        const movie = metadata[id];
+        console.log(!['99'].includes(movie.genres.toString()) )
+        if (movie.score && !['99'].includes(movie.genres.toString()) && !movie.adult && !movie.video) {
+            filtered[id] = movie;
+        }
     }
     // only keep most popular shows
     const keys = Object.keys(filtered)
-        .filter(id => filtered[id].popularity < 4000)
+        .filter(id => filtered[id].members < 200)
     return _.pick(filtered, keys) as MOVIE_DICT;
 }
 
@@ -99,6 +105,8 @@ function parseMetadata(json): MOVIE_DATA {
         members: json.vote_count,
         picture: 'https://image.tmdb.org/t/p/w185/' + json.poster_path,
         score: json.vote_average,
+        adult: json.adult,
+        video: json.video,
 
         // recommendations: json.recommendations?.map(r => ({ id: r.node.id, count: r.num_recommendations })),
 
@@ -126,8 +134,8 @@ function parseMetadata(json): MOVIE_DATA {
 export function processMetadata(metadata) {
     const data = _.mapValues(metadata, parseMetadata);
     console.log(`${_.size(data)} movies have metadata`);
-    // const filtered = filterMetadata(data);
-    // console.log(`${_.size(filtered)} movies filtered`);
+    const filtered = filterMetadata(data);
+    console.log(`${_.size(filtered)} movies filtered`);
 
     fs.writeFileSync('data/min_metadata.json', JSON.stringify(data, null, 2));
     return data;

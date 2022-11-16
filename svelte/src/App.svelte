@@ -70,7 +70,7 @@ import { MOVIE_DATA } from "./ts/types";
             if (passingScore && yearInRange ) {
                 node.brightness = 1;
             } else {
-                node.brightness = 0.2;
+                node.brightness = 0.5;
             }
         }
 

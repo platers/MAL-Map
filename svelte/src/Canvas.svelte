@@ -170,7 +170,6 @@
 		}
 
 		function drawLayout(layout_json) {
-			console.log(layout_json);
 			viewport.removeChildren();
 			let node_map: { [id: number]: Node } = {};
 			nodes = _.entries(layout_json.nodes).map(([id_, pos]) => {

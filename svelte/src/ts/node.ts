@@ -1,5 +1,6 @@
 import { Graphics, BitmapFont, BitmapText, Point, Sprite, Loader, Rectangle } from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
+import _ from 'lodash';
 import { Edge } from './edge';
 import { Writable } from 'svelte/store';
 import { hslToHex } from './base_utils';
@@ -193,7 +194,7 @@ export class FullNode extends Node {
 		super(id);
 		this.metadata = metadata;
 		this.addLabel(this.metadata.title || this.metadata.original_title);
-		this.setScale(Math.sqrt(this.metadata.score));
+		this.setScale(Math.pow(this.metadata.score,2)/20);
 	}
 
 
