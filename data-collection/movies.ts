@@ -3,16 +3,15 @@ const fs = require('fs');
 const cliProgress = require('cli-progress');
 import fetch from "cross-fetch";
 import { MOVIE_DATA, MOVIE_DICT } from '../svelte/src/ts/types';
-import { config } from '../config';
+// import { config } from '../config';
 
-const KEY = config['API_KEY'];
+const KEY = '0e9c7a63a1bc4d8309d3290e6d92782d';
 
 export async function getIds() {
     console.log('Getting ids from TMDb');
     const ids = [];
 
     for (let i = 1; i <= 100; i++) {
-        // https://api.themoviedb.org/3/movie/popular?api_key=0e9c7a63a1bc4d8309d3290e6d92782d&page=100
         const url = `https://api.themoviedb.org/3/movie/popular?api_key=${KEY}&page=${i}`; //IMDB 634 KOEN 8228166
         const response = await fetch(url, {
             headers: {
