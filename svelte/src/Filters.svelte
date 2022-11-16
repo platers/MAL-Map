@@ -13,9 +13,9 @@
 
 <button class="collapsible" on:click={(e) => clickCollapsible(e)}>
     {#if filters_active}
-        <i class="fa fa-caret-down fa-caret" />
+        <i class="fa fa-caret-down fa-caret"></i>
     {:else}
-        <i class="fa fa-caret-right fa-caret" />
+        <i class="fa fa-caret-right fa-caret"></i>
     {/if}
     Filters
 </button>

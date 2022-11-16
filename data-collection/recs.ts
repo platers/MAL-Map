@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
-import { ANIME_DICT } from '../svelte/src/ts/types';
+import { MOVIE_DICT } from '../svelte/src/ts/types';
 
 const fs = require('fs');
 export type Edge = [number, number, number];
 
-export function storeEdges(metadata: ANIME_DICT, filename = 'data/edges.json') {
+export function storeEdges(metadata: MOVIE_DICT, filename = 'data/edges.json') {
     const edges:Edge[] = getEdges(metadata)
         .filter(e => e[2] > 0.03)
         .sort((a, b) => b[0] - a[1]);
@@ -15,7 +15,7 @@ export function storeEdges(metadata: ANIME_DICT, filename = 'data/edges.json') {
 }
 
 
-function getEdges(metadatas: ANIME_DICT) {
+function getEdges(metadatas: MOVIE_DICT) {
     const edge_dict: { [key: string]: Edge; } = {};
 
         function addToEdge(a: number, b: number, w: number) {
@@ -32,11 +32,11 @@ function getEdges(metadatas: ANIME_DICT) {
         }
 
     for (const [id, metadata] of Object.entries(metadatas)) {
-        const recs = metadata.recommendations;
+        const recs = metadata.related;
         const total_recs = _.sumBy(recs, r => r.count);
 
         for (const rec of _.values(recs)) {
-            addToEdge(parseInt(id), rec.id, rec.count / total_recs / 2);
+            addToEdge(parseInt(id), rec.id, rec.count / total_recs / 1);
         }
     }
 

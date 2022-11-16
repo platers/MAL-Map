@@ -186,7 +186,7 @@ export async function createCluster(edges: Edge[], edgePath='data/edges.txt', cl
 
     console.log('Creating clusters...');
     let start = Date.now();
-    await execShellCommand(`python3 cluster.py ${edgePath} ${clusterPath}`);
+    await execShellCommand(`python3.10 cluster.py ${edgePath} ${clusterPath}`);
     console.log(`Clustering took ${(Date.now() - start) / 1000}s`);
 
     // Process clusters

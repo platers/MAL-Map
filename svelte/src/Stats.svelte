@@ -1,20 +1,20 @@
 <script lang="ts">
-    import { ANIME_DATA } from "./ts/types";
-    export let metadata: ANIME_DATA;
+    // import { MOVIE_DATA } from "./ts/types";
+    // export let metadata: MOVIE_DATA;
     let stats: { name: string; value: string }[];
     $: stats = [
-        {
-            name: "Score",
-            value: isNaN(metadata.score)
-                ? "N/A"
-                : metadata.score.toPrecision(2),
-        },
-        {
-            name: "Popularity",
-            value: isNaN(metadata.popularity)
-                ? "N/A"
-                : "#" + metadata.popularity.toString(),
-        },
+        // {
+        //     name: "Score",
+        //     value: isNaN(metadata.score)
+        //         ? "N/A"
+        //         : metadata.score.toPrecision(2),
+        // },
+        // {
+        //     name: "Popularity",
+        //     value: isNaN(metadata.popularity)
+        //         ? "N/A"
+        //         : "#" + metadata.popularity.toString(),
+        // },
     ];
 </script>
 

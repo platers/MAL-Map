@@ -102,7 +102,7 @@ export class Layout {
     }
 
     max_tier() {
-        return this.Clusters[1].length - 1;
+        return this.Clusters[238].length - 1;
     }
 
     initClusterMap() {
@@ -120,6 +120,7 @@ export class Layout {
     assignHues(nodes: Node[], min_hue: number, max_hue: number) {
         const range = max_hue - min_hue;
         let sorted = nodes.sort((a, b) => this.Cluster_Nodes[a.id].length - this.Cluster_Nodes[b.id].length);
+
         // shuffle the last n-2 elements
         let shuffled = _.shuffle(sorted.slice(2));
         shuffled = sorted.slice(0, 2).concat(shuffled);
@@ -158,8 +159,6 @@ export class Layout {
             new_node.hue = node.hue;
             return new_node;
         });
-
-
 
         if (old_nodes.length < this.min_colors && nodes.length >= this.min_colors) {
             this.assignHues(nodes, 0, 360);

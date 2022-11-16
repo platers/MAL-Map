@@ -6,7 +6,7 @@
     import Searchbar from "./Searchbar.svelte";
     import Sidebar from "./Sidebar.svelte";
     import SidebarHeader from "./SidebarHeader.svelte";
-    import { Metadata, nativeTitle, queryUser } from "./ts/utils";
+    import { Metadata, nativeTitle } from "./ts/utils";
     import {
         completedList,
         distance,
@@ -22,38 +22,38 @@
     import { FullNode, Node } from "./ts/node";
 	import Edges from "../../data-collection/data/edges.json";
 	import Layout_ from "../../data-collection/data/layout.json";
-import { ANIME_DATA } from "./ts/types";
+import { MOVIE_DATA } from "./ts/types";
 
     function getOptionLabel(option) {
         if (!option) return "";
-        if (!option.englishTitle) return option.title;
-        if (option.title === option.englishTitle) return option.title;
-        if (nativeTitle(option) === option.englishTitle) {
-            return `${option.englishTitle} (${option.title})`;
+        if (!option.title) return option.original_title;
+        if (option.original_title === option.title) return option.title;
+        if (nativeTitle(option) === option.title) {
+            return `${option.title} (${option.original_title})`;
         } else {
-            return `${option.title} (${option.englishTitle})`;
+            return `${option.original_title} (${option.title})`;
         }
     }
 
-    let options = _.values(Metadata) as ANIME_DATA[];
+    let options = _.values(Metadata) as MOVIE_DATA[];
 
-    async function handleSubmit(e: Event, input: string) {
-        e.preventDefault();
-        console.log(input);
-        username.set(input);
-        if (input === "") {
-            completedList.set([]);
-            return;
-        }
-
-        const list = await queryUser(input);
-        if (list === null) {
-            alert("User not found or server error, please try again."); // TODO: prettier error handling
-        } else {
-            completedList.set(list);
-        }
-        $distance = $distance; // force update
-    }
+    // async function handleSubmit(e: Event, input: string) {
+    //     e.preventDefault();
+    //     console.log(input);
+    //     username.set(input);
+    //     if (input === "") {
+    //         completedList.set([]);
+    //         return;
+    //     }
+    //
+    //     const list = await queryUser(input);
+    //     if (list === null) {
+    //         alert("User not found or server error, please try again."); // TODO: prettier error handling
+    //     } else {
+    //         completedList.set(list);
+    //     }
+    //     $distance = $distance; // force update
+    // }
 
     function onInit(nodes: FullNode[], node_map: { [id: number]: FullNode }) {
         function updateBrightness(
@@ -63,7 +63,7 @@ import { ANIME_DATA } from "./ts/types";
             startYear: number,
             endYear: number
         ) {
-            const metadata = node.metadata as ANIME_DATA;
+            const metadata = node.metadata as MOVIE_DATA;
             const passingScore = metadata.score >= scoreThreshold;
             const yearInRange =
                 metadata.year <= endYear &&
@@ -120,11 +120,11 @@ import { ANIME_DATA } from "./ts/types";
     </SidebarHeader>
     <Searchbar slot="searchbar" {selected_anime} {options} {getOptionLabel} />
     <Filters slot="filters">
-        <TextInput
-            placeholder="MyAnimeList Username"
-            title="Enter your MyAnimeList username and press the search icon"
-            {handleSubmit}
-        />
+<!--        <TextInput-->
+<!--            placeholder="MyAnimeList Username"-->
+<!--            title="Enter your MyAnimeList username and press the search icon"-->
+<!--            {handleSubmit}-->
+<!--        />-->
         <SliderFilter
             label="Distance to user watched list"
             value={distance}

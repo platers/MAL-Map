@@ -37,7 +37,6 @@ class Cluster:
         if len(G.nodes) < 15:
             self.nodes = nodes
             return
-
         coms = getComs(G)
         partitions = coms.communities
         if len(partitions) == 1:

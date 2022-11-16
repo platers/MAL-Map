@@ -5,8 +5,8 @@
     import Stats from "./Stats.svelte";
     import { selected_anime } from "./store";
     import { nativeTitle } from "./ts/utils";
-    import { ANIME_DATA } from "./ts/types";
-    let metadata: ANIME_DATA;
+    import { MOVIE_DATA } from "./ts/types";
+    let metadata: MOVIE_DATA;
     let genres = [];
     selected_anime.subscribe((anime) => {
         metadata = anime;
@@ -30,7 +30,7 @@
         <Genres {genres} />
 
         <div class="synopsis">
-            <p>{metadata.synopsis}</p>
+            <p>{metadata.overview}</p>
         </div>
     </div>
 {/if}

@@ -1,7 +1,7 @@
 export class METADATA {
     id: number;
     title: string;
-    display_title?: string;
+    original_title?: string;
     picture?: string;
     members: number;
 

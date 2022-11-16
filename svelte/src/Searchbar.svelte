@@ -1,14 +1,14 @@
 <script lang="ts">
     import _ from "lodash";
     import Autocomplete from "@smui-extra/autocomplete";
-    import { ANIME_DATA } from "./ts/types";
+    import { MOVIE_DATA } from "./ts/types";
     import { Writable } from "svelte/store";
 
-    export let selected_anime: Writable<ANIME_DATA>;
-    export let options: ANIME_DATA[];
-    export let getOptionLabel: (option: ANIME_DATA) => string;
+    export let selected_anime: Writable<MOVIE_DATA>;
+    export let options: MOVIE_DATA[];
+    export let getOptionLabel: (option: MOVIE_DATA) => string;
 
-    let autocomplete_anime: ANIME_DATA | null = null;
+    let autocomplete_anime: MOVIE_DATA | null = null;
     $: if (autocomplete_anime) {
         $selected_anime = autocomplete_anime;
     }
@@ -44,7 +44,7 @@
         placeholder="Search for an anime"
         label="Search Anime"
     />
-    <i class="fa fa-search search-icon" />
+    <i class="fa fa-search search-icon"></i>
 </div>
 
 <style lang="scss">

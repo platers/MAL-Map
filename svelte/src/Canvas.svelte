@@ -170,6 +170,7 @@
 		}
 
 		function drawLayout(layout_json) {
+			console.log(layout_json);
 			viewport.removeChildren();
 			let node_map: { [id: number]: Node } = {};
 			nodes = _.entries(layout_json.nodes).map(([id_, pos]) => {
@@ -241,7 +242,7 @@
 	});
 </script>
 
-<canvas bind:this={canvas} />
+<canvas bind:this={canvas}></canvas>
 <div class="zoom-options">
 	<button class="zoom-option" id="zoom-in">+</button>
 	<button class="zoom-option" id="zoom-out">-</button>
