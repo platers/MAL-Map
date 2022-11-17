@@ -70,13 +70,13 @@
 
 		app.stage.addChild(viewport);
 
-		console.log(`${_.size(Metadata_)} anime`);
+		console.log(`${_.size(Metadata_)} movies`);
 
 		let nodes: Node[] = [];
 		let edges = [];
 		let line_container = new LineContainer(20);
 
-		viewport.on("clicked", (event) => {
+		viewport.on("clicked", () => {
 			if (FullNode.last_click_time > Date.now() - 200) {
 				return;
 			}
@@ -211,14 +211,14 @@
 				}
 			}
 
-			selected_movie.subscribe((anime) => {
-				if (!anime) {
+			selected_movie.subscribe((movie) => {
+				if (!movie) {
 					params_dict.show = null;
 					updateHashParams();
 					return;
 				}
 
-				const node = node_map[anime.id] as FullNode;
+				const node = node_map[movie.id] as FullNode;
 				if (FullNode.last_click_time < Date.now() - 200) {
 					Node.selected = node;
 					viewport.animate({

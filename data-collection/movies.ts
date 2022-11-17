@@ -1,8 +1,9 @@
 import * as _ from 'lodash';
+import fetch from "cross-fetch";
+import {MOVIE_DATA, MOVIE_DICT} from '../svelte/src/ts/types';
+
 const fs = require('fs');
 const cliProgress = require('cli-progress');
-import fetch from "cross-fetch";
-import { MOVIE_DATA, MOVIE_DICT } from '../svelte/src/ts/types';
 // import { config } from '../config';
 
 const KEY = '0e9c7a63a1bc4d8309d3290e6d92782d';
@@ -26,9 +27,7 @@ export async function getIds() {
 
     }
 
-    const uniqueIds = _.uniq(ids);
-
-    return uniqueIds;
+    return _.uniq(ids);
 }
 
 export async function storeMetadata(ids: number[] = [], filename = 'data/metadata.json') {
@@ -56,11 +55,10 @@ export async function storeMetadata(ids: number[] = [], filename = 'data/metadat
                 }
             });
 
-            const mergedMetadata = {
+            metadata[id] = {
                 ...await response.json(),
                 ...await response_rec.json()
             };
-            metadata[id] = mergedMetadata;
         } catch (e) {
             console.log(e, id);
         }
@@ -79,14 +77,23 @@ function filterMetadata(metadata: MOVIE_DICT): MOVIE_DICT {
     let filtered = {};
     for (const id in metadata) {
         const movie = metadata[id];
-        console.log(!['99'].includes(movie.genres.toString()) )
-        if (movie.score && !['99'].includes(movie.genres.toString()) && !movie.adult && !movie.video) {
+        // console.log(!['99'].includes(movie.genres.toString()) )
+        console.log(movie.title);
+        console.log(`Score: ${movie.score}`);
+        console.log(`Documentary: ${!['Documentary'].includes(movie.genres.toString())}`);
+        console.log(`Adult: ${!movie.adult}`);
+        console.log(`Video: ${!movie.video}`);
+        console.log(movie.score && !['Documentary'].includes(movie.genres.toString()) && !movie.adult && !movie.video);
+        if (movie.score && !['Documentary'].includes(movie.genres.toString()) && !movie.adult && !movie.video) {
             filtered[id] = movie;
         }
     }
     // only keep most popular shows
     const keys = Object.keys(filtered)
-        .filter(id => filtered[id].members < 200)
+        .filter(id => {
+            console.log(`${filtered[id].title}: ${filtered[id].members < 200} (${filtered[id].members})`)
+            return filtered[id].members < 200;
+        })
     return _.pick(filtered, keys) as MOVIE_DICT;
 }
 
@@ -96,7 +103,7 @@ function parseMetadata(json): MOVIE_DATA {
         title: json.title,
         original_title: json.original_title,
         overview: json.overview,
-        url: json.url,
+        url: 'www.letterboxd.com/tmdb/'+json.id,
         runtime: json.runtime,
         year: json.release_date.split('-')[0],
         related: json.results?.map((r, i) => ({ id: r.id, count: json.results?.length - i })),

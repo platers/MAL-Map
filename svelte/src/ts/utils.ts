@@ -47,10 +47,10 @@ function displayTitle(metadata: any) {
     }
     return title;
 }
-import Anime from "../../../data-collection/data/min_metadata.json";
+import Movie from "../../../data-collection/data/min_metadata.json";
 import Clusters_ from "../../../data-collection/data/clusters.json";
 import { MOVIE_DATA } from "./types";
-export const Metadata = _.mapValues(Anime, (metadata: any) => Object.assign(new MOVIE_DATA(), metadata, {
+export const Metadata = _.mapValues(Movie, (metadata: any) => Object.assign(new MOVIE_DATA(), metadata, {
     title: displayTitle(metadata),
 }));
 export const Clusters = Cluster.fromJSON(Clusters_);

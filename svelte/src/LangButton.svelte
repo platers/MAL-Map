@@ -1,21 +1,20 @@
 <script lang="ts">
-import { params_dict, updateHashParams } from "./ts/base_utils";
+    import {params_dict, updateHashParams} from "./ts/base_utils";
 
-    import { currentLanguage } from "./ts/utils";
+    import {currentLanguage} from "./ts/utils";
 
     function changeLanguage() {
-        const newLang = currentLanguage() === "en" ? "ja" : "en";
-        params_dict.language = newLang;
+        params_dict.language = currentLanguage() === "en" ? "og" : "en";
         updateHashParams();
         window.location.reload();
     }
 </script>
 
-<button class="lang-button" on:click={(e) => changeLanguage()}>
+<button class="lang-button" on:click={() => changeLanguage()}>
     {#if currentLanguage() === "en"}
-        JA
+        Language: Original
     {:else}
-        EN
+        Language: English
     {/if}
 </button>
 

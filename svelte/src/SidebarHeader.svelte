@@ -4,7 +4,7 @@
 
 <div style="text-align: center;">
     <a href={githubURL} class="github-link">
-        <i class="fa fa-github" style="font-size: 30px;" />
+        <i class="fa fa-github" style="font-size: 30px;"></i>
     </a>
     <slot />
 </div>

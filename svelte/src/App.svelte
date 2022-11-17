@@ -1,5 +1,5 @@
 <script lang="ts">
-    import AnimeView from "./AnimeView.svelte";
+    import MovieView from "./MovieView.svelte";
     import Canvas from "./Canvas.svelte";
     import Filters from "./Filters.svelte";
     import LangButton from "./LangButton.svelte";
@@ -33,24 +33,6 @@ import { MOVIE_DATA } from "./ts/types";
     }
 
     let options = _.values(Metadata) as MOVIE_DATA[];
-
-    // async function handleSubmit(e: Event, input: string) {
-    //     e.preventDefault();
-    //     console.log(input);
-    //     username.set(input);
-    //     if (input === "") {
-    //         completedList.set([]);
-    //         return;
-    //     }
-    //
-    //     const list = await queryUser(input);
-    //     if (list === null) {
-    //         alert("User not found or server error, please try again."); // TODO: prettier error handling
-    //     } else {
-    //         completedList.set(list);
-    //     }
-    //     $distance = $distance; // force update
-    // }
 
     function onInit(nodes: FullNode[], node_map: { [id: number]: FullNode }) {
         function updateBrightness(
@@ -105,12 +87,6 @@ import { MOVIE_DATA } from "./ts/types";
 />
 
 <Sidebar>
-    <SidebarHeader
-        slot="top-header"
-        githubURL="https://github.com/platers/MAL-Map"
-    >
-        <LangButton />
-    </SidebarHeader>
     <Searchbar slot="searchbar" {selected_movie} {options} {getOptionLabel} />
     <Filters slot="filters">
 <!--        <TextInput-->
@@ -136,7 +112,13 @@ import { MOVIE_DATA } from "./ts/types";
         />
     </Filters>
 
-    <AnimeView slot="metadata-view" />
+    <MovieView slot="metadata-view" />
+    <SidebarHeader
+            slot="top-header"
+            githubURL="https://github.com/koenhagen/Movie-Map"
+    >
+        <LangButton />
+    </SidebarHeader>
 </Sidebar>
 
 <style lang="scss">

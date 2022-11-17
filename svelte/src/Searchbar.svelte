@@ -8,9 +8,9 @@
     export let options: MOVIE_DATA[];
     export let getOptionLabel: (option: MOVIE_DATA) => string;
 
-    let autocomplete_anime: MOVIE_DATA | null = null;
-    $: if (autocomplete_anime) {
-        $selected_movie = autocomplete_anime;
+    let autocomplete_movie: MOVIE_DATA | null = null;
+    $: if (autocomplete_movie) {
+        $selected_movie = autocomplete_movie;
     }
 </script>
 
@@ -40,7 +40,7 @@
                 })
                 .slice(0, 10);
         }}
-        bind:value={autocomplete_anime}
+        bind:value={autocomplete_movie}
         placeholder="Search for a movie"
         label="Search Movie"
     />
