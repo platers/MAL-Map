@@ -84,7 +84,7 @@ function filterMetadata(metadata: MOVIE_DICT): MOVIE_DICT {
     // only keep most popular shows
     const keys = Object.keys(filtered)
         .filter(id => {
-            return filtered[id].members < 200;
+            return filtered[id].members > 200;
         })
     return _.pick(filtered, keys) as MOVIE_DICT;
 }

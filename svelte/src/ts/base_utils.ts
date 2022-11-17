@@ -18,9 +18,8 @@ export function hslToHex(h, s, l) {
 export function rectIntersectsRect(a: Rectangle, b: Rectangle) {
     if (a.x > b.x + b.width || a.x + a.width < b.x)
         return false;
-    if (a.y > b.y + b.height || a.y + a.height < b.y)
-        return false;
-    return true;
+    return !(a.y > b.y + b.height || a.y + a.height < b.y);
+
 }
 
 const params = window.location.hash.substring(1).split("&");
@@ -37,16 +36,9 @@ export function updateHashParams() {
 
 export function getTiers(cluster: Cluster, Metadata: METADATA_DICT) {
     let tiers: { [id: number]: number } = {};
-
     function getHead(cluster: Cluster) {
         let potential_heads: number[] = cluster.nodes.concat(cluster.clusters.map(getHead));
-        console.log(potential_heads);
-        for (var head in potential_heads){
-            console.log(Metadata[head]);
-            console.log(Metadata[head].score);
-        }
-        console.log(Metadata[1631]);
-        let most_popular = _.maxBy(potential_heads, (node) => Metadata[node].score);
+        let most_popular = _.maxBy(potential_heads, (node) => Metadata[node]?.score);
 
         for (let n of cluster.nodes) {
             tiers[n] = Infinity;

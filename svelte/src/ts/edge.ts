@@ -54,9 +54,11 @@ export class LineContainer {
         }
 
         for (const edge of edges) {
+            if (!edge){
+                continue;
+            }
             const bucket_id = Math.floor(edge.alpha() * (this.buckets.length - 1));
             const bucket = this.buckets[bucket_id];
-            // console.log(bucket_id);
             bucket.moveTo(edge.source.x, edge.source.y);
             bucket.lineTo(edge.target.x, edge.target.y);
         }

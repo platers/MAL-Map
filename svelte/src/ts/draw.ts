@@ -71,7 +71,7 @@ export function drawImages(nodes: FullNode[], viewport: Viewport) {
     }
 
     const visible_nodes = getViewportNodes(nodes, viewport) as FullNode[];
-    if (viewport.screenWidthInWorldPixels > 2000) {
+    if (viewport.screenWidthInWorldPixels > 1000) {
         return;
     }
 

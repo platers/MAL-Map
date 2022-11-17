@@ -6,7 +6,7 @@ export type Edge = [number, number, number];
 
 export function storeEdges(metadata: MOVIE_DICT, filename = 'data/edges.json') {
     const edges:Edge[] = getEdges(metadata)
-        .filter(e => e[2] > 0.02) //TODO: Check effect
+        .filter(e => e[2] > 0.03) //TODO: Check effect
         .sort((a, b) => b[0] - a[1]);
     const out = edges
         .map(e => [e[0], e[1], e[2].toPrecision(3)]);

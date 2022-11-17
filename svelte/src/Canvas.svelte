@@ -172,13 +172,18 @@
 		function drawLayout(layout_json) {
 			viewport.removeChildren();
 			let node_map: { [id: number]: Node } = {};
-			nodes = _.entries(layout_json.nodes).map(([id_, pos]) => {
+			nodes = _.entries(layout_json.nodes).filter(([id_, _]) => {
+				return Metadata_[id_];
+			}).map(([id_, pos]) => {
 				let id = parseInt(id_);
 				let new_node = FullNode.fromPos(id, pos, Metadata_[id]);
 				node_map[id] = new_node;
 				return new_node;
 			});
 			edges = layout_json.edges.map((e) => {
+				if (!node_map[e[0]] || !node_map[e[1]]) {
+					return;
+				}
 				return new Edge(node_map[e[0]], node_map[e[1]], e[2]);
 			});
 			line_container.setEdges(edges);

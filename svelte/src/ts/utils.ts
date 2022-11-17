@@ -1,6 +1,9 @@
-import { Cluster } from "../../../data-collection/cluster";
+import {Cluster} from "../../../data-collection/cluster";
 import * as _ from "lodash";
-import { getTiers, params_dict } from "./base_utils";
+import {getTiers, params_dict} from "./base_utils";
+import Movie from "../../../data-collection/data/min_metadata.json";
+import Clusters_ from "../../../data-collection/data/clusters.json";
+import {MOVIE_DATA} from "./types";
 
 
 export function currentLanguage() {
@@ -37,19 +40,11 @@ export function nativeTitle(metadata: MOVIE_DATA) {
 // }
 
 function displayTitle(metadata: any) {
-    let title = currentLanguage() == 'en' ?
+    return currentLanguage() == 'en' ?
         metadata.title ||
         metadata.original_title : metadata.original_title;
-    // discard after colon
-    const colon = title.indexOf(': ');
-    if (colon !== -1) {
-        title = title.slice(0, colon);
-    }
-    return title;
 }
-import Movie from "../../../data-collection/data/min_metadata.json";
-import Clusters_ from "../../../data-collection/data/clusters.json";
-import { MOVIE_DATA } from "./types";
+
 export const Metadata = _.mapValues(Movie, (metadata: any) => Object.assign(new MOVIE_DATA(), metadata, {
     title: displayTitle(metadata),
 }));
