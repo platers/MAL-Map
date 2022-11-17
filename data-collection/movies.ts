@@ -12,7 +12,7 @@ export async function getIds() {
     console.log('Getting ids from TMDb');
     const ids = [];
 
-    for (let i = 1; i <= 100; i++) {
+    for (let i = 1; i <= 250; i++) {
         const url = `https://api.themoviedb.org/3/movie/popular?api_key=${KEY}&page=${i}`; //IMDB 634 KOEN 8228166
         const response = await fetch(url, {
             headers: {
@@ -77,13 +77,6 @@ function filterMetadata(metadata: MOVIE_DICT): MOVIE_DICT {
     let filtered = {};
     for (const id in metadata) {
         const movie = metadata[id];
-        // console.log(!['99'].includes(movie.genres.toString()) )
-        console.log(movie.title);
-        console.log(`Score: ${movie.score}`);
-        console.log(`Documentary: ${!['Documentary'].includes(movie.genres.toString())}`);
-        console.log(`Adult: ${!movie.adult}`);
-        console.log(`Video: ${!movie.video}`);
-        console.log(movie.score && !['Documentary'].includes(movie.genres.toString()) && !movie.adult && !movie.video);
         if (movie.score && !['Documentary'].includes(movie.genres.toString()) && !movie.adult && !movie.video) {
             filtered[id] = movie;
         }
@@ -91,7 +84,6 @@ function filterMetadata(metadata: MOVIE_DICT): MOVIE_DICT {
     // only keep most popular shows
     const keys = Object.keys(filtered)
         .filter(id => {
-            console.log(`${filtered[id].title}: ${filtered[id].members < 200} (${filtered[id].members})`)
             return filtered[id].members < 200;
         })
     return _.pick(filtered, keys) as MOVIE_DICT;
@@ -103,7 +95,7 @@ function parseMetadata(json): MOVIE_DATA {
         title: json.title,
         original_title: json.original_title,
         overview: json.overview,
-        url: 'www.letterboxd.com/tmdb/'+json.id,
+        url: 'https://letterboxd.com/tmdb/'+json.id,
         runtime: json.runtime,
         year: json.release_date.split('-')[0],
         related: json.results?.map((r, i) => ({ id: r.id, count: json.results?.length - i })),
@@ -143,6 +135,6 @@ export function processMetadata(metadata) {
     const filtered = filterMetadata(data);
     console.log(`${_.size(filtered)} movies filtered`);
 
-    fs.writeFileSync('data/min_metadata.json', JSON.stringify(data, null, 2));
+    fs.writeFileSync('data/min_metadata.json', JSON.stringify(filtered, null, 2));
     return data;
 }

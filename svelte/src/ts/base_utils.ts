@@ -40,6 +40,12 @@ export function getTiers(cluster: Cluster, Metadata: METADATA_DICT) {
 
     function getHead(cluster: Cluster) {
         let potential_heads: number[] = cluster.nodes.concat(cluster.clusters.map(getHead));
+        console.log(potential_heads);
+        for (var head in potential_heads){
+            console.log(Metadata[head]);
+            console.log(Metadata[head].score);
+        }
+        console.log(Metadata[1631]);
         let most_popular = _.maxBy(potential_heads, (node) => Metadata[node].score);
 
         for (let n of cluster.nodes) {
