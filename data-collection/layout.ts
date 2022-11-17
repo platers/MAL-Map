@@ -118,11 +118,6 @@ export class Layout {
     }
 
     assignHues(nodes: Node[], min_hue: number, max_hue: number) {
-        console.log("Assign Hues");
-        // console.log(nodes);
-        console.log(this.Cluster_Nodes)
-        console.log(this.Cluster_Nodes[238])
-        console.log(this.Cluster_Nodes[238].length)
         const range = max_hue - min_hue;
         let sorted = nodes.sort((a, b) => this.Cluster_Nodes[a.id].length - this.Cluster_Nodes[b.id].length);
 
