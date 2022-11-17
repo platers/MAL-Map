@@ -206,10 +206,10 @@
 			});
 			viewport.setZoom(0.01);
 
-			if (params_dict.show) {
+			if (params_dict.movie) {
 				const node = (nodes as FullNode[]).find(
 					(node) =>
-						node.metadata.canonicalTitle() === params_dict.show
+						node.metadata.canonicalTitle() === params_dict.movie
 				);
 				if (node) {
 					selected_movie.set(node.metadata);
@@ -218,7 +218,7 @@
 
 			selected_movie.subscribe((movie) => {
 				if (!movie) {
-					params_dict.show = null;
+					params_dict.movie = null;
 					updateHashParams();
 					return;
 				}
@@ -235,7 +235,7 @@
 				}
 
 				// update hash
-				params_dict.show = node.metadata.canonicalTitle();
+				params_dict.movie = node.metadata.canonicalTitle();
 				updateHashParams();
 			});
 
