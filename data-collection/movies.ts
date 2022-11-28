@@ -12,7 +12,10 @@ export async function getIds() {
     console.log('Getting ids from TMDb');
     const ids = [];
 
+    const bar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+    bar.start(250, 0);
     for (let i = 1; i <= 250; i++) {
+        bar.increment();
         const url = `https://api.themoviedb.org/3/movie/popular?api_key=${KEY}&page=${i}`; //IMDB 634 KOEN 8228166
         const response = await fetch(url, {
             headers: {
@@ -26,6 +29,7 @@ export async function getIds() {
         await new Promise(resolve => setTimeout(resolve, 600));
 
     }
+    bar.stop();
 
     return _.uniq(ids);
 }
@@ -48,7 +52,7 @@ export async function storeMetadata(ids: number[] = [], filename = 'data/metadat
                     'api_key': KEY,
                 }
             });
-            const url_recommended = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${KEY}`;
+            const url_recommended = `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${KEY}`;
             const response_rec = await fetch(url_recommended, {
                 headers: {
                     'api_key': KEY,

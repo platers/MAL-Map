@@ -202,7 +202,7 @@
 
 			viewport.clampZoom({
 				minWidth: 50,
-				maxWidth: 10000,
+				maxWidth: 20000,
 			});
 			viewport.setZoom(0.01);
 
